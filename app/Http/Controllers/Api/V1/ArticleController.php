@@ -6,10 +6,10 @@
  * Time: 23:31
  */
 
-namespace App\Http\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
 
-class Article extends Api
+class ArticleController extends ApiController
 {
 
 }

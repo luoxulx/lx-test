@@ -151,7 +151,6 @@ return [
          * Package Service Providers...
          */
         // lx-new
-        Dingo\Api\Provider\LaravelServiceProvider::class,
 
         /*
          * Application Service Providers...

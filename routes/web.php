@@ -14,10 +14,3 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-/* Dashboard Index *///, 'middleware' => ['auth', 'admin']
-Route::group(['prefix' => 'uslx'], function () {
-   Route::get('{path?}', function(){
-   		return view('app.dashboard');
-   })->where('path', '[\/\w\.-]*');
-});

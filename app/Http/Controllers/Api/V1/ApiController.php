@@ -6,14 +6,15 @@
  * Time: 23:30
  */
 
-namespace App\Http\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
 use League\Fractal\Manager;
+use App\Support\Response;
+use App\Support\Transform;
 use App\Http\Controllers\Controller;
 
-class Api extends Controller
+class ApiController extends Controller
 {
-
     protected $response;
 
     /**
@@ -22,6 +23,7 @@ class Api extends Controller
     public function __construct()
     {
         $manager = new Manager();
+
         $this->response = new Response(response(), new Transform($manager));
     }
 }

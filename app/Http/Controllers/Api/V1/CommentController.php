@@ -6,10 +6,10 @@
  * Time: 23:32
  */
 
-namespace App\Http\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
 
-class Tag extends Api
+class CommentController extends ApiController
 {
 
 }
