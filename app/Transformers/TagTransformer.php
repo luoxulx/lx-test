@@ -8,15 +8,15 @@
 
 namespace App\Transformers;
 
-use Dingo\Api\Http\Request;
-use Dingo\Api\Transformer\Binding;
-use Dingo\Api\Contract\Transformer\Adapter;
+use App\Models\Tag;
+use League\Fractal\TransformerAbstract;
 
-class TagTransformer implements Adapter
+class TagTransformer extends TransformerAbstract
 {
 
-    public function transform($response, $transformer, Binding $binding, Request $request)
+    public function transform(Tag $tag)
     {
 
+        return $tag->attributesToArray();
     }
 }

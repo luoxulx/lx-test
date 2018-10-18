@@ -15,7 +15,7 @@
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api']], function () {
+Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:api']
     Route::get('dashboard', function (){
         return view('welcome');
     });

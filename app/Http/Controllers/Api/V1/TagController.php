@@ -17,7 +17,7 @@ class TagController extends ApiController
 
     public function __construct(TagRepository $tagRepository)
     {
-        // parent::__construct();
+        parent::__construct();
         $this->tag = $tagRepository;
     }
     public function index()
