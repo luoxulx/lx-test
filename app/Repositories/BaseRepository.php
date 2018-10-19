@@ -62,25 +62,23 @@ trait BaseRepository
 
     /**
      * Get all the records
-     *
-     * @return Collection
+     * @param array $columns
+     * @return mixed
      */
-    public function all()
+    public function all($columns = array('*'))
     {
-        return $this->model->get();
+        return $this->model->get($columns);
     }
 
     /**
-     * Get number of the records
-     *
-     * @param  int $number
-     * @param  string $sort
-     * @param  string $sortColumn
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @param null $perPage
+     * @param array $orderBy
+     * @param array $columns
+     * @return mixed
      */
-    public function page($number = 10, $sort = 'desc', $sortColumn = 'created_at')
+    public function page($perPage = null,$orderBy = array('sortColumn'=>'created_at','sort'=>'desc'), $columns = array('*'))
     {
-        return $this->model->orderBy($sortColumn, $sort)->paginate($number);
+        return $this->model->orderBy($orderBy['sortColumn'], $orderBy['sort'])->paginate($perPage, $columns);
     }
 
     /**

@@ -9,7 +9,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 
+use App\Repositories\CommentRepository;
+
 class CommentController extends ApiController
 {
 
+    protected $comment;
+
+    public function __construct(CommentRepository $commentRepository)
+    {
+        $this->comment = $commentRepository;
+    }
 }

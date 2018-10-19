@@ -70,8 +70,19 @@ class Response
         return $this->item($resource, $transformer);
     }
 
+    public function withPutted($resource = null, TransformerAbstract $transformer = null)
+    {
+        $this->statusCode = HttpResponse::HTTP_CREATED;
+        if (is_null($resource)) {
+            return $this->json();
+        }
+
+        return $this->item($resource, $transformer);
+    }
+
     /**
      * Make a 204 no content response.
+     * eg: delete resource
      *
      * @return \Illuminate\Http\JsonResponse
      */

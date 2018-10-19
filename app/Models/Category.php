@@ -12,4 +12,21 @@ namespace App\Models;
 class Category extends Models
 {
 
+    protected $fillable = [
+        'parent_id',
+        'name',
+        'description',
+        'thumbnail',
+    ];
+
+    /**
+     * Get the articles for the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
 }

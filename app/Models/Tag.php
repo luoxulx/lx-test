@@ -12,4 +12,15 @@ namespace App\Models;
 class Tag extends Models
 {
 
+    protected $fillable = [
+        'name',
+        'color',
+        'style',
+        'description',
+    ];
+
+    public function articles()
+    {
+        return $this->morphedByMany(Article::class, 'taggable');
+    }
 }

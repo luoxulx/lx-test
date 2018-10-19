@@ -12,4 +12,8 @@ namespace App\Models;
 class Comment extends Models
 {
 
+    protected $fillable = [
+
+    ];
+
 }

@@ -15,20 +15,32 @@
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:api']
-    Route::get('dashboard', function (){
-        return view('welcome');
-    });
-    Route::post('/auth/login', 'AuthController@login');
+Route::post('/auth/login', 'Api\\V1\\AuthController@login');
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api']], function () { //'middleware'=>['auth:api']
+
     Route::post('/auth/logout', 'AuthController@logout');
 
     Route::resource('tag', 'TagController', ['names'=>[
+        'index' => 'api.tag.index',
+        'show' => 'api.tag.show',
+        'store' => 'api.tag.store',
+        'update' => 'api.tag.update',
+        'destroy' => 'api.tag.destroy',
+    ], 'except'=>['create', 'edit']]);
+
+    Route::resource('article', 'ArticleController', ['names'=>[
         'index' => 'api.article.index',
-        'create' => 'api.article.create',
         'show' => 'api.article.show',
         'store' => 'api.article.store',
-        'edit' => 'api.article.edit',
         'update' => 'api.article.update',
         'destroy' => 'api.article.destroy',
-    ], 'except'=>['']]);
+    ], 'except'=>['create', 'edit']]);
+
+    Route::resource('category', 'CategoryController', ['names'=>[
+        'index' => 'api.category.index',
+        'show' => 'api.category.show',
+        'store' => 'api.category.store',
+        'update' => 'api.category.update',
+        'destroy' => 'api.category.destroy',
+    ], 'except'=>['create', 'edit']]);
 });

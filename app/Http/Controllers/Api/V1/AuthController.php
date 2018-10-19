@@ -22,14 +22,14 @@ class AuthController extends ApiController
         if ($token = Auth::guard('api')->attempt($params)) {
             return response()->json(['token'=>$token]);
         }else {
-            return response()->json(['message'=>'error']);
+            return response()->json(['message'=>'email or password is incorrect']);
         }
     }
 
     public function logout()
     {
         Auth::guard('api')->logout();
-        return response()->json(['message'=>'logout']);
+        return response()->json(['message'=>'logout successful']);
     }
 
 }

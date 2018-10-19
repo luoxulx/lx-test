@@ -46,6 +46,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->hasHeader('authorization') === true) {
+
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+                'debug' => config('app.debug') === true ? ['file' => $exception->getFile(),'line' => $exception->getLine(),'trace' => $exception->getTrace()] : null
+            ], 500);
+        }
         return parent::render($request, $exception);
     }
 }
