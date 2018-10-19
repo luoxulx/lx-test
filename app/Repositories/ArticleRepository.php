@@ -14,7 +14,7 @@ use App\Models\Article;
 class ArticleRepository
 {
 
-    use Repository;
+    use BaseRepository;
 
     protected $model;
 

@@ -14,7 +14,8 @@ use App\Models\Tag;
 class TagRepository
 {
 
-    use Repository;
+    use BaseRepository;
+
     protected $model;
 
     public function __construct(Tag $tag)

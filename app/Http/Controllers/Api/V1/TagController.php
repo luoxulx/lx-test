@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Repositories\TagRepository;
+use App\Transformers\TagTransformer;
 
 class TagController extends ApiController
 {
@@ -20,8 +21,13 @@ class TagController extends ApiController
         parent::__construct();
         $this->tag = $tagRepository;
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function index()
     {
-        return $this->response->collection($this->tag->page());
+        return $this->response->collection($this->tag->page(), new TagTransformer());
     }
 }

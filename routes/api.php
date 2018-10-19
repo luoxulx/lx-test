@@ -19,6 +19,9 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     Route::get('dashboard', function (){
         return view('welcome');
     });
+    Route::post('/auth/login', 'AuthController@login');
+    Route::post('/auth/logout', 'AuthController@logout');
+
     Route::resource('tag', 'TagController', ['names'=>[
         'index' => 'api.article.index',
         'create' => 'api.article.create',
