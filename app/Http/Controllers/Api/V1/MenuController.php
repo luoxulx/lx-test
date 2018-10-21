@@ -26,4 +26,9 @@ class MenuController extends ApiController
     {
         return $this->response->collection($this->menu->page(), new MenuTransformer());
     }
+
+    public function test()
+    {
+        return 1;
+    }
 }
