@@ -22,6 +22,8 @@ class ApiController extends Controller
      */
     public function __construct()
     {
+        config('app.env') === 'production' ? header('Access-Control-Allow-Origin:*.lnmpa.top') : header('Access-Control-Allow-Origin:*');
+
         $manager = new Manager();
 
         $this->response = new Response(response(), new Transform($manager));

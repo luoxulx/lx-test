@@ -1,3 +1,20 @@
+<p align="center">
+	api-test
+
+	步骤：
+php composer.phar install -vvv
+cp .env.example .env
+add DB info into .env
+php artisan key:generate
+php artisan jwt:secret
+迁移：php artisan migrate
+回滚：php artisan migrate:rollback   状态：（status）
+</p>
+
+
+
+
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
