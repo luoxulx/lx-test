@@ -6,7 +6,8 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Headers:Content-Type,Authorization');
 define('LARAVEL_START', microtime(true));
 
 /*

@@ -16,6 +16,7 @@ class AuthController extends ApiController
 
     public function login(Request $request)
     {
+        // return response()->json(['test'=>$request]);
         $params['email'] = $request->post('email');
         if (trim($params['email']) == '') {
             return response()->json(['message'=>'email is required !'], 400);
@@ -27,7 +28,7 @@ class AuthController extends ApiController
         }
 
         if ($token = Auth::guard('api')->attempt($params)) {
-            return response()->json(['dgo_token'=>$token, 'csrf_token'=>csrf_token() === null ? str_random() : csrf_token()]);
+            return response()->json(['dgo_token'=>'Bearer '.$token, 'csrf_token'=>csrf_token() === null ? str_random() : csrf_token()]);
         }else {
             return response()->json(['message'=>'email or password is incorrect'], 401);
         }
