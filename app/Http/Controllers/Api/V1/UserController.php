@@ -18,6 +18,7 @@ class UserController extends ApiController
 
     public function __construct(UserRepository $userRepository)
     {
+        parent::__construct();
         $this->user = $userRepository;
     }
 
@@ -25,13 +26,11 @@ class UserController extends ApiController
     {
 
         return response()->json([
-            'admin'=>[
-                'role'=>['admin'],
-                'token'=>'x',
-                'introduction'=>'x',
-                'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-                'name'=>'x'
-            ]
+            'roles'=>['admin'],
+            'token'=>'xadmin',
+            'introduction'=>'admin',
+            'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+            'name'=>'admin'
         ]);
     }
 }

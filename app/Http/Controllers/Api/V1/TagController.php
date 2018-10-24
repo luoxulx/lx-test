@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\TagRequest;
 use App\Repositories\TagRepository;
 use App\Transformers\TagTransformer;
+use Illuminate\Http\Request;
 
 class TagController extends ApiController
 {
@@ -27,17 +27,18 @@ class TagController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->response->collection($this->tag->page(), new TagTransformer());
+        $per_page = $request->get('per_page', 10);
+        return $this->response->collection($this->tag->page($per_page), new TagTransformer());
     }
 
-    public function store(TagRequest $request)
+    public function store(Request $request)
     {
         return $this->response->withCreated($this->tag->store($request->all()), new TagTransformer());
     }
 
-    public function update(TagRequest $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->response->withPutted($this->tag->update($id, $request->all()), new TagTransformer());
     }

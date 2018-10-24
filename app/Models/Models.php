@@ -9,9 +9,10 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Models extends \Illuminate\Database\Eloquent\Model
+class Models extends Model
 {
 
     use SoftDeletes;

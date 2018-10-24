@@ -17,6 +17,9 @@ class ArticleTransformer extends TransformerAbstract
 
     public function transform(Article $article)
     {
-        return $article->attributesToArray();
+        $res = $article->attributesToArray();
+        $res['tags'] = $article->tags()->pluck('id');
+        $res['category'] = $article->category()->pluck('id');
+        return $res;
     }
 }

@@ -9,22 +9,38 @@
 namespace App\Models;
 
 
-class Article extends Models
+use App\Scopes\StatusScope;
+use Illuminate\Database\Eloquent\Model;
+
+class Article extends Model
 {
 
     protected $fillable = [
         'category_id',
+        'user_id',
         'title',
         'slug',
         'source',
         'description',
         'thumbnail',
-        'content',
+        'content'
     ];
 
     protected $casts = [
         'content' => 'array'
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new StatusScope());
+    }
 
     public function user()
     {
@@ -38,7 +54,7 @@ class Article extends Models
 
     public function tags()
     {
-        return $this->morphMany(Tag::class,'taggable');
+        return $this->morphToMany(Tag::class,'taggable');
     }
 
     public function comments()

@@ -17,6 +17,7 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->tinyInteger('category_id')->unsigned()->nullable(false);
             $table->tinyInteger('user_id')->unsigned()->nullable(false);
+            $table->tinyInteger('status')->unsigned()->default(1)->comment('status');
             $table->string('title', 255)->nullable(false);
             $table->string('slug')->unique()->nullable(false)->index();
             $table->string('source', 255)->comment('source');

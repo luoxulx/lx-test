@@ -63,7 +63,7 @@ trait BaseRepository
     /**
      * Get all the records
      * @param array $columns
-     * @return mixed
+     * @return Collection
      */
     public function all($columns = array('*'))
     {
@@ -71,14 +71,14 @@ trait BaseRepository
     }
 
     /**
-     * @param null $perPage
-     * @param array $orderBy
-     * @param array $columns
-     * @return mixed
+     * @param integer $per_page
+     * @param string $sortColumn
+     * @param string $sort
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function page($perPage = null,$orderBy = array('sortColumn'=>'created_at','sort'=>'desc'), $columns = array('*'))
+    public function page(int $per_page, $sortColumn='created_at', $sort='desc')
     {
-        return $this->model->orderBy($orderBy['sortColumn'], $orderBy['sort'])->paginate($perPage, $columns);
+        return $this->model->orderBy($sortColumn, $sort)->paginate($per_page);
     }
 
     /**

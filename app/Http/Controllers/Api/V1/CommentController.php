@@ -18,6 +18,7 @@ class CommentController extends ApiController
 
     public function __construct(CommentRepository $commentRepository)
     {
+    	parent::__construct();
         $this->comment = $commentRepository;
     }
 }

@@ -9,9 +9,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoryRepository;
 use App\Transformers\CategoryTransformer;
+use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
@@ -24,6 +24,7 @@ class CategoryController extends ApiController
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
+        parent::__construct();
         $this->category = $categoryRepository;
     }
 
@@ -36,12 +37,12 @@ class CategoryController extends ApiController
         return $this->response->collection($this->category->page(), new CategoryTransformer());
     }
 
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
         return $this->response->withCreated($this->category->store($request->all()), new CategoryTransformer());
     }
 
-    public function update(CategoryRequest $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->response->withPutted($this->category->update($id, $request->all()), new CategoryTransformer());
     }

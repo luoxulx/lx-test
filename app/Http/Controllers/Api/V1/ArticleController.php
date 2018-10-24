@@ -9,9 +9,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Http\Requests\ArticleRequest;
 use App\Repositories\ArticleRepository;
 use App\Transformers\ArticleTransformer;
+use Illuminate\Http\Request;
 
 class ArticleController extends ApiController
 {
@@ -20,6 +20,7 @@ class ArticleController extends ApiController
 
     public function __construct(ArticleRepository $articleRepository)
     {
+        parent::__construct();
         $this->article = $articleRepository;
     }
 
@@ -27,17 +28,20 @@ class ArticleController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->response->collection($this->article->page(), new ArticleTransformer());
+        // $page = $request->get('page');
+        $limit = $request->get('limit', 10);
+        $sort = $request->get('sort', 'created_at');
+        return $this->response->collection($this->article->page($limit, $sort), new ArticleTransformer());
     }
 
-    public function store(ArticleRequest $request)
+    public function store(Request $request)
     {
         return $this->response->withCreated($this->article->store($request->all()), new ArticleTransformer());
     }
 
-    public function update(ArticleRequest $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->response->withPutted($this->article->update($id, $request->all()), new ArticleTransformer());
     }
