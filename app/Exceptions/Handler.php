@@ -59,6 +59,6 @@ class Handler extends ExceptionHandler
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
             'debug' => ['file' => $exception->getFile(),'line' => $exception->getLine(),'trace' => $exception->getTrace()]
-        ], 500);
+        ], 200);
     }
 }
