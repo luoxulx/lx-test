@@ -30,6 +30,10 @@ class Article extends Model
         'content' => 'array'
     ];
 
+    protected $hidden = [
+        'deleted_at'
+    ];
+
     /**
      * The "booting" method of the model.
      *
