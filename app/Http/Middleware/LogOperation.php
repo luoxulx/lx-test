@@ -1,5 +1,6 @@
 <?php
 /**
+ * 只记录  所有的api 接口,含jwt鉴权和开放的
  * Created by PhpStorm.
  * User: luoxulx
  * Date: 2018/10/22
@@ -11,23 +12,24 @@ namespace App\Http\Middleware;
 use App\Models\OperationLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class LogOperation extends Middleware
+class LogOperation extends BaseMiddleware
 {
 
 
     public function handle($request, \Closure $next)
     {
         if ($this->shouldLogOperation($request)) {
-            $log = [
+            $log = array(
                 // 'user_id' => Admin::user()->id,
                 'user_id' => 1,
                 'path'    => substr($request->path(), 0, 255),
                 'method'  => $request->method(),
                 'ip'      => $request->getClientIp(),
-                'input'   => json_encode($request->input()),
-            ];
+                'request'   => json_encode(['header'=>$request->headers->all(), 'body'=>$request->input()]),
+                'jwt_auth' => $request->hasHeader('Authorization') ? 1 : 0
+            );
 
             try {
                 OperationLog::create($log);

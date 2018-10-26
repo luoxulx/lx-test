@@ -29,12 +29,14 @@ class CategoryController extends ApiController
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->response->collection($this->category->page(), new CategoryTransformer());
+        $per_page = $request->get('per_page', 10);
+        return $this->response->collection($this->category->page($per_page), new CategoryTransformer());
     }
 
     public function store(Request $request)

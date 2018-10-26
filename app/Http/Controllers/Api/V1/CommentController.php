@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Repositories\CommentRepository;
+use App\Transformers\CommentTransformer;
+use Illuminate\Http\Request;
 
 class CommentController extends ApiController
 {
@@ -20,5 +22,11 @@ class CommentController extends ApiController
     {
     	parent::__construct();
         $this->comment = $commentRepository;
+    }
+
+    public function index(Request $request)
+    {
+        $per_page = $request->get('per_page', 10);
+        return $this->response->collection($this->comment->page($per_page), new CommentTransformer());
     }
 }

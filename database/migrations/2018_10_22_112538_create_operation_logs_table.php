@@ -16,10 +16,11 @@ class CreateOperationLogsTable extends Migration
         Schema::create('operation_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('user_id');
-            $table->string('path',225);
+            $table->string('path',128);
             $table->char('method',10)->index();
             $table->string('ip',16);
-            $table->text('input')->comment('request content,by json_encode');
+            $table->longText('request')->comment('request header && content,by json_encode');
+            $table->tinyInteger('jwt_auth')->default(0)->comment('1:jwt_auth;0:NO');
 
             $table->timestamps();
             $table->softDeletes();

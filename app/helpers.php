@@ -12,3 +12,11 @@ if (! function_exists('test')) {
         return 1;
     }
 }
+
+if (! function_exists('xxx')) {
+	function xxx($method)
+	{
+		$array = \App\Models\OperationLog::$methodColors;
+		return array_get($array, $method, 'grey');
+	}
+}

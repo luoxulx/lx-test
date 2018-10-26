@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-//        if ($request->hasHeader('authorization') === true) {
+//        if ($request->hasHeader('authorization')) {
 //
 //            return response()->json([
 //                'message' => $exception->getMessage(),

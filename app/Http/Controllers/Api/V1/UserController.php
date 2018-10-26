@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Repositories\UserRepository;
+use App\Transformers\UserTransformer;
+use Illuminate\Http\Request;
 
 class UserController extends ApiController
 {
@@ -32,5 +34,26 @@ class UserController extends ApiController
             'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
             'name'=>'admin'
         ]);
+    }
+
+    public function index(Request $request)
+    {
+        $per_page = $request->get('per_page', 10);
+        return $this->response->collection($this->user->page($per_page), new UserTransformer);
+    }
+
+    public function store ()
+    {
+        return $this->response->withCreated();
+    }
+
+    public function update()
+    {
+        return $this->response->withPutted();
+    }
+
+    public function destory()
+    {
+        return $this->response->withNoContent();
     }
 }

@@ -12,10 +12,8 @@
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
 Route::post('/auth/login', 'Api\\V1\\AuthController@login');
+
 Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api']], function () { //'middleware'=>['auth:api']
 
     Route::post('/auth/logout', 'AuthController@logout');
@@ -43,5 +41,12 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api']], function () {
         'store' => 'api.category.store',
         'update' => 'api.category.update',
         'destroy' => 'api.category.destroy',
+    ], 'except'=>['create', 'edit']]);
+    Route::resource('comment', 'CommentController', ['names'=>[
+        'index' => 'api.comment.index',
+        'show' => 'api.comment.show',
+        'store' => 'api.comment.store',
+        'update' => 'api.comment.update',
+        'destroy' => 'api.comment.destroy',
     ], 'except'=>['create', 'edit']]);
 });
