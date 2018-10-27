@@ -14,7 +14,7 @@
 
 Route::post('/auth/login', 'Api\\V1\\AuthController@login');
 
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api']], function () { //'middleware'=>['auth:api']
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation', 'administrator']], function () { //'middleware'=>['auth:api']
 
     Route::post('/auth/logout', 'AuthController@logout');
     Route::get('/user/user_info', 'UserController@user_info');

@@ -12,9 +12,8 @@ namespace App\Http\Middleware;
 use App\Models\OperationLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class LogOperation extends BaseMiddleware
+class LogOperation
 {
 
 
