@@ -29,4 +29,10 @@ class CommentController extends ApiController
         $per_page = $request->get('per_page', 10);
         return $this->response->collection($this->comment->page($per_page), new CommentTransformer());
     }
+
+    public function destory($id)
+    {
+        $this->comment->destroy($id);
+        return $this->response->withNoContent();
+    }
 }
