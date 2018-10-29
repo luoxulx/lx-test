@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 // Route::get('/login', 'Auth\LoginController@index')->name('login');
-Route::get('/xxx',function() {
-	return view('article.index');
+Route::group(['namespace'=>'Front'], function (){
+    Route::get('/xxx', 'ArticleController@index');
 });
