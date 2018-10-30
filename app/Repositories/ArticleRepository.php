@@ -68,6 +68,15 @@ class ArticleRepository
         return $article->update($data);
     }
 
+    public function getBySlug($slug)
+    {
+        $article = $this->model->where('slug', $slug)->firstOrFail();
+
+        $article->increment('view_count');
+
+        return $article;
+    }
+
 
     /**
      * Get a list of tag ids that are associated with the given discussion.

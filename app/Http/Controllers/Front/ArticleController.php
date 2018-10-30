@@ -27,9 +27,9 @@ class ArticleController extends FrontController
         return view('article.index', compact('articles'));
     }
 
-    public function show()
+    public function show($slug)
     {
-        $article = $this->article->getById(1);
+        $article = $this->article->getBySlug($slug);
 
         return view('article.detail', compact('article'));
     }

@@ -17,4 +17,5 @@ Route::get('/', function () {
 // Route::get('/login', 'Auth\LoginController@index')->name('login');
 Route::group(['namespace'=>'Front'], function (){
     Route::get('/xxx', 'ArticleController@index');
+    Route::get('/{slug}', 'ArticleController@show');
 });

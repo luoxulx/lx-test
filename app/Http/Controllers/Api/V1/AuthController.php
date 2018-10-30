@@ -8,36 +8,83 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends ApiController
 {
 
-    public function login(Request $request)
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/xxx-aaa';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        // return response()->json(['test'=>$request]);
-        $params['email'] = $request->post('email');
-        if (trim($params['email']) == '') {
-            return response()->json(['message'=>'email is required !'], 400);
-        }
-
-        $params['password'] = $request->post('password');
-        if (trim($params['password']) == '') {
-            return response()->json(['message'=>'password is required !'], 400);
-        }
-
-        if ($token = Auth::guard('api')->attempt($params)) {
-            return response()->json(['dgo_token'=>'Bearer '.$token, 'csrf_token'=>csrf_token() === null ? str_random() : csrf_token()]);
-        }else {
-            return response()->json(['message'=>'email or password is incorrect'], 401);
-        }
+        $this->middleware('guest')->except('logout');
     }
 
-    public function logout()
+    public function login(Request $request)
     {
-        Auth::guard('api')->logout();
-        return response()->json(['message'=>'logout successful']);
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return response()->json(['message'=>'logout']);
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        $jwtAuth = new JWTAuth();
+
+        $token = $jwtAuth->getToken();
+        return response()->json(['dgo_token'=>'Bearer '.$token, 'csrf_token'=>csrf_token() === null ? str_random() : csrf_token()]);
+
     }
 
 }

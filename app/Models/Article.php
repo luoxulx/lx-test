@@ -80,4 +80,33 @@ class Article extends Model
         ];
         $this->attributes['content'] = json_encode($data);
     }
+
+    /**
+     * Set the title and the readable slug.
+     *
+     * @param string $value
+     */
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+
+        $this->setUniqueSlug($value, str_random(12));
+    }
+
+    /**
+     * Set the unique slug.
+     *
+     * @param $value
+     * @param $extra
+     */
+    public function setUniqueSlug($value, $extra) {
+        $slug = str_slug($value.'-'.$extra);
+
+        if (static::whereSlug($slug)->exists()) {
+            $this->setUniqueSlug($slug, (int) $extra + 1);
+            return;
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
 }
