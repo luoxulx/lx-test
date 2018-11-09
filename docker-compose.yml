@@ -1,32 +1,89 @@
-nginx:
-    build: ./nginx
+version: '2'
+
+services:
+
+  ### Applications Code Container #############################
+
+  applications:
+    image: lzssing/true
+    volumes:
+    - ./:/var/www
+
+  ### Workspace Utilities Container ###########################
+
+  workspace:
+    image: lzssing/workspace
+    volumes_from:
+    - applications
+    extra_hosts:
+    - "dockerhost:10.0.75.1"
+    ports:
+    - "22"
+    tty: true
+    networks:
+    - frontend
+    - backend
+
+  ### PHP-FPM Container #######################################
+
+  php-fpm:
+    image: lzssing/php-fpm
+    volumes_from:
+    - applications
+    expose:
+    - "9000"
+    depends_on:
+    - workspace
+    extra_hosts:
+    - "dockerhost:10.0.75.1"
+    environment:
+    - PHP_IDE_CONFIG=laradock
+    networks:
+    - backend
+
+  ### NGINX Server Container ##################################
+
+  nginx:
+    image: lzssing/nginx
+    volumes_from:
+    - applications
+    volumes:
+    - ../logs/nginx/:/var/log/nginx
     ports:
     - "80:80"
-    links:
-    - "php"
-    volumes:
-    - ~/opt:/opt
+    - "443"
+    depends_on:
+    - php-fpm
+    networks:
+    - frontend
+    - backend
 
-php:
-    build: ./php
-    ports:
-    - "9000:9000"
-    links:
-    - "mysql"
-    - "redis"
-    volumes:
-    - ~/opt:/opt
+  ### MySQL Container #########################################
 
-mysql:
-    build: ./mysql
+  mysql:
+    image: lzssing/mysql
+    environment:
+    - MYSQL_DATABASE=study
+    - MYSQL_USER=root
+    - MYSQL_PASSWORD=docker.18
+    - MYSQL_ROOT_PASSWORD=docker.18
+    volumes:
+    - ../data/mysql:/var/lib/mysql
     ports:
     - "3306:3306"
-    volumes:
-    - ~/opt/data/mysql:/var/lib/mysql
-    environment:
-        MYSQL_ROOT_PASSWORD: 123456
+    networks:
+    - backend
 
-redis:
-    build: ./redis
-    ports:
-    - "6379:6379"
+### Networks Setup ############################################
+
+networks:
+  frontend:
+    driver: "bridge"
+  backend:
+    driver: "bridge"
+
+### Volumes Setup #############################################
+
+volumes:
+  mysql:
+    driver: "local"
