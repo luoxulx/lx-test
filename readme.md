@@ -2,14 +2,17 @@
 	api-test
 
 	步骤：
-php composer.phar install -vvv
-cp .env.example .env
-add DB info into .env
-php artisan key:generate
-php artisan jwt:secret
-迁移：php artisan migrate
-回滚：php artisan migrate:rollback   状态：（status）
 </p>
+
+<p>php composer.phar install -vvv</p>
+<p>cp .env.example .env</p>
+<p>add DB info into .env</p>
+<p>php artisan key:generate</p>
+<p>php artisan jwt:secret</p>
+<p>迁移：php artisan migrate</p>
+<p>回滚：php artisan migrate:rollback   状态：（status）</p>
+
+<p>Docker:docker-compose start/stop</p>
 
 
 
