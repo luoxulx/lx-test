@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends ApiController
 {
@@ -24,15 +24,6 @@ class AuthController extends ApiController
      */
     protected $redirectTo = '/xxx-aaa';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
 
     public function login(Request $request)
     {
@@ -61,9 +52,7 @@ class AuthController extends ApiController
 
     public function logout(Request $request)
     {
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
+        Auth::guard('api')->logout();
 
         return response()->json(['message'=>'logout']);
     }
@@ -74,17 +63,16 @@ class AuthController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function sendLoginResponse(Request $request)
+    public function sendLoginResponse($request)
     {
-        $request->session()->regenerate();
+        $param['email'] = $request->post('email');
+        $param['password'] = $request->post('password');
+        $token = Auth::guard('api')->attempt($param);
 
-        $this->clearLoginAttempts($request);
-
-        $jwtAuth = new JWTAuth();
-
-        $token = $jwtAuth->getToken();
-        return response()->json(['dgo_token'=>'Bearer '.$token, 'csrf_token'=>csrf_token() === null ? str_random() : csrf_token()]);
-
+        if (! $token) {
+            return response()->json(['error' => 'bearer token failed'],401);
+        }
+        return response()->json(['token' => 'bearer ' . $token,'key'=>str_random(16)], 201);
     }
 
 }

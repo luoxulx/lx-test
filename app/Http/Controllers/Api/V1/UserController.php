@@ -29,11 +29,27 @@ class UserController extends ApiController
 
         return response()->json([
             'roles'=>['admin'],
-            'token'=>'xadmin',
-            'introduction'=>'admin',
+            'introduction'=>'adminxx',
             'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-            'name'=>'admin'
+            'name'=>'adminsx'
         ]);
+    }
+
+    public function transaction_list()
+    {
+        $data = [];
+        for ($i = 0;$i <= 20; $i++) {
+            $data[$i]['order_no'] = str_random(5).'-'.str_random(5).'-'.str_random(5);
+            $data[$i]['timestamp'] = time();
+            $data[$i]['username'] = str_random(8);
+            $data[$i]['price'] = randomFloat(650,15000);
+            if ($i % 2) {
+                $data[$i]['status'] = 'success';
+            } else {
+                $data[$i]['status'] = 'pending';
+            }
+        }
+        return response()->json(['total'=>count($data), 'items'=>$data]);
     }
 
     public function index(Request $request)

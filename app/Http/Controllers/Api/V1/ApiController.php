@@ -22,7 +22,6 @@ class ApiController extends Controller
      */
     public function __construct()
     {
-
         $manager = new Manager();
 
         $this->response = new Response(response(), new Transform($manager));

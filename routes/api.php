@@ -12,12 +12,13 @@
 |
 */
 
-Route::post('/auth/login', 'Api\\V1\\AuthController@login');
+Route::post('/login/login', 'Api\\V1\\AuthController@login');
 
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation', 'administrator']], function () { //'middleware'=>['auth:api']
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], function () { //'middleware'=>['auth:api']
 
-    Route::post('/auth/logout', 'AuthController@logout');
+    Route::post('/login/logout', 'AuthController@logout');
     Route::get('/user/user_info', 'UserController@user_info');
+    Route::get('/user/transaction/list', 'UserController@transaction_list');
 
     Route::resource('tag', 'TagController', ['names'=>[
         'index' => 'api.tag.index',

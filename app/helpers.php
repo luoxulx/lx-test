@@ -20,3 +20,10 @@ if (! function_exists('xxx')) {
 		return array_get($array, $method, 'grey');
 	}
 }
+
+if (! function_exists('randomFloat')) {
+    function randomFloat($min = 0, $max = 1) {
+        return $min + mt_rand() / mt_getrandmax() * ($max - $min);
+    }
+}
+
