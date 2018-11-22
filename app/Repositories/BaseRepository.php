@@ -76,9 +76,10 @@ trait BaseRepository
      * @param string $sort
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function page(int $per_page, $sortColumn='created_at', $sort='desc')
+    public function page(int $per_page, $sort=['id', 'desc'])
     {
-        return $this->model->orderBy($sortColumn, $sort)->paginate($per_page);
+
+        return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
     }
 
     /**

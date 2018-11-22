@@ -6,15 +6,8 @@
  * Time: 下午23:29
  */
 
-if (! function_exists('test')) {
-    function test()
-    {
-        return 1;
-    }
-}
-
-if (! function_exists('xxx')) {
-	function xxx($method)
+if (! function_exists('operationColor')) {
+	function operationColor($method)
 	{
 		$array = \App\Models\OperationLog::$methodColors;
 		return array_get($array, $method, 'grey');

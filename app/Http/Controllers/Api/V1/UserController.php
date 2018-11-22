@@ -38,18 +38,20 @@ class UserController extends ApiController
     public function transaction_list()
     {
         $data = [];
-        for ($i = 0;$i <= 20; $i++) {
-            $data[$i]['order_no'] = str_random(5).'-'.str_random(5).'-'.str_random(5);
+        for ($i = 1;$i <= 20; $i++) {
+            $data[$i]['order_no'] = str_random(8).'-'.str_random(8).'-'.str_random(8);
             $data[$i]['timestamp'] = time();
             $data[$i]['username'] = str_random(8);
-            $data[$i]['price'] = randomFloat(650,15000);
+            $data[$i]['price'] = round(randomFloat(650,15000), 3);
             if ($i % 2) {
                 $data[$i]['status'] = 'success';
             } else {
                 $data[$i]['status'] = 'pending';
             }
         }
-        return response()->json(['total'=>count($data), 'items'=>$data]);
+        $result['total'] = \count($data);
+        $result['items'] = $data;
+        return response()->json($result);
     }
 
     public function index(Request $request)

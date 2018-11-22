@@ -32,7 +32,9 @@ class ArticleController extends ApiController
     {
         // $page = $request->get('page');
         $limit = $request->get('limit', 10);
-        $sort = $request->get('sort', 'created_at');
+        $sortOrderBy = $request->get('sort', 'id,desc');
+        $sort = explode(',', $sortOrderBy,2);
+
         return $this->response->collection($this->article->page($limit, $sort), new ArticleTransformer());
     }
 

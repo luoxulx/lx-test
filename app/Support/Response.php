@@ -70,6 +70,11 @@ class Response
         return $this->item($resource, $transformer);
     }
 
+    /**
+     * @param null $resource
+     * @param TransformerAbstract|null $transformer
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function withPutted($resource = null, TransformerAbstract $transformer = null)
     {
         $this->statusCode = HttpResponse::HTTP_CREATED;
