@@ -20,3 +20,9 @@ if (! function_exists('randomFloat')) {
     }
 }
 
+if (! function_exists('getFileSuffix')) {
+    function getFileSuffix($fileUrl) {
+        $tempArr =  pathinfo($fileUrl);
+        return $tempArr['extension'];
+    }
+}

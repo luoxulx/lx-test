@@ -1,0 +1,7 @@
+创建表文件: php artisan make:migration create_xxx_table (写好结果)
+生成表: php artisan migrate
+创建seed: php artisan make:seed XxxTableSeeder  (写好种子)
+
+在DatabaseSeeder中添加 写好的seed
+填充数据: php artisan db:seed
+回滚: php artisan migrate:rollback

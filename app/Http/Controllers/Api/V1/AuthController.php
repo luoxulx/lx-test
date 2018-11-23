@@ -54,7 +54,7 @@ class AuthController extends ApiController
     {
         Auth::guard('api')->logout();
 
-        return response()->json(['message'=>'logout']);
+        return $this->response->json(['message'=>'logout']);
     }
 
     /**
@@ -70,9 +70,9 @@ class AuthController extends ApiController
         $token = Auth::guard('api')->attempt($param);
 
         if (! $token) {
-            return response()->json(['error' => 'bearer token failed'],401);
+            return $this->response->json(['error' => 'bearer token failed']);
         }
-        return response()->json(['token' => 'bearer ' . $token,'key'=>str_random(16)], 201);
+        return $this->response->json(['token' => 'bearer ' . $token,'key'=>str_random(16)]);
     }
 
 }

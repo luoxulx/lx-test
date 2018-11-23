@@ -35,6 +35,11 @@ class ArticleController extends ApiController
         return $this->response->collection($this->article->page($per_page), new ArticleTransformer());
     }
 
+    public function show($id)
+    {
+        return $this->response->item($this->article->getById($id), new ArticleTransformer());
+    }
+
     public function store(Request $request)
     {
         return $this->response->withCreated($this->article->store($request->all()), new ArticleTransformer());

@@ -10,9 +10,8 @@ namespace App\Models;
 
 
 use App\Scopes\StatusScope;
-use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class Article extends Models
 {
 
     protected $fillable = [

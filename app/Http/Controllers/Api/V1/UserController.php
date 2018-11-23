@@ -26,8 +26,7 @@ class UserController extends ApiController
 
     public function user_info()
     {
-
-        return response()->json([
+        return $this->response->json([
             'roles'=>['admin'],
             'introduction'=>'adminxx',
             'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
@@ -51,7 +50,7 @@ class UserController extends ApiController
         }
         $result['total'] = \count($data);
         $result['items'] = $data;
-        return response()->json($result);
+        return $this->response->json($result);
     }
 
     public function index(Request $request)
