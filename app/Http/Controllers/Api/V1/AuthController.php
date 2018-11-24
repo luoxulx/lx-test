@@ -70,8 +70,7 @@ class AuthController extends ApiController
         $token = Auth::guard('api')->attempt($param);
 
         if (! $token) {
-            $this->response->setStatusCode(401);
-            return $this->response->json(['message' => 'bearer token failed']);
+            return $this->response->withUnauthorized('bearer token failed');
         }
 
         return $this->response->json(['token' => 'bearer ' . $token,'key'=>str_random(16)]);

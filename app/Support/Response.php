@@ -77,7 +77,7 @@ class Response
      */
     public function withPutted($resource = null, TransformerAbstract $transformer = null)
     {
-        $this->statusCode = HttpResponse::HTTP_CREATED;
+        $this->statusCode = HttpResponse::HTTP_NO_CONTENT;
         if (is_null($resource)) {
             return $this->json();
         }

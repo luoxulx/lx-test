@@ -6,12 +6,12 @@
  * Time: 23:52
  */
 
-namespace App\LarTools\Tools;
+namespace App\Tools\LaravelLogTool;
 
 
 class LaravelLogView
 {
-    use BootExtension;
+
     /**
      * The log file name.
      *
@@ -108,34 +108,7 @@ class LaravelLogView
         $logs = $this->getLogFiles();
         return current($logs);
     }
-    /**
-     * Get previous page url.
-     *
-     * @return bool|string
-     */
-    public function getPrevPageUrl()
-    {
-        if ($this->pageOffset['end'] >= $this->getFilesize() - 1) {
-            return false;
-        }
-        return route('log-viewer-file', [
-            'file' => $this->file, 'offset' => $this->pageOffset['end'],
-        ]);
-    }
-    /**
-     * Get Next page url.
-     *
-     * @return bool|string
-     */
-    public function getNextPageUrl()
-    {
-        if ($this->pageOffset['start'] == 0) {
-            return false;
-        }
-        return route('log-viewer-file', [
-            'file' => $this->file, 'offset' => -$this->pageOffset['start'],
-        ]);
-    }
+
     /**
      * Fetch logs by giving offset.
      *
@@ -290,5 +263,14 @@ TPL;
         unset($logs);
         rsort($parsed);
         return $parsed;
+    }
+
+    public static function bytesToHuman($bytes)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
+        }
+        return round($bytes, 2).' '.$units[$i];
     }
 }

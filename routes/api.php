@@ -53,4 +53,8 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], 
 
     // tool 部分接口
     Route::post('/tool/qiniu/get_token', 'ToolController@qiniuToken');
+
+    // extend
+    Route::get('/extend/laravel_log', 'LaravelLogController@index');
+
 });
