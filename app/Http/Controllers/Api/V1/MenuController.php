@@ -24,7 +24,7 @@ class MenuController extends ApiController
 
     public function index()
     {
-        return $this->response->collection($this->menu->page(), new MenuTransformer());
+        return $this->response->collection($this->menu->page(10), new MenuTransformer());
     }
 
 

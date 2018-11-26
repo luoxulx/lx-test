@@ -17,14 +17,14 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->tinyInteger('category_id')->unsigned()->nullable(false);
             $table->tinyInteger('user_id')->unsigned()->nullable(false);
-            $table->tinyInteger('status')->unsigned()->default(1)->comment('status');
-            $table->integer('view_count')->unsigned()->default(0)->comment('view_count');
+            $table->tinyInteger('status')->unsigned()->default(1)->comment('状态');
+            $table->integer('view_count')->unsigned()->default(0)->comment('点击查看计数');
             $table->string('title', 255)->nullable(false);
             $table->string('slug')->unique()->nullable(false)->index();
-            $table->string('source', 255)->comment('source');
-            $table->string('description', 255)->nullable();
-            $table->string('thumbnail', 100)->nullable();
-            $table->longText('content')->nullable()->comment('json{raw,html}');
+            $table->string('source', 255)->comment('来源网址');
+            $table->string('description', 255)->nullable()->comment('描述');
+            $table->string('thumbnail', 100)->nullable()->comment('缩略图');
+            $table->longText('content')->nullable()->comment('主体内容json{raw,html}');
 
             $table->timestamps();
             $table->softDeletes();

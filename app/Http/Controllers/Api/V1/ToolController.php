@@ -21,4 +21,13 @@ class ToolController extends ApiController
     {
         return $this->response->json(['token'=>$qiniuFileManager->uploadToken()]);
     }
+
+    public function puFileToBucket()
+    {
+        $object = new QiniuFileManager();
+
+        $res = $object->uploadToBucket('xxx', $_FILES);
+
+        return $res;
+    }
 }

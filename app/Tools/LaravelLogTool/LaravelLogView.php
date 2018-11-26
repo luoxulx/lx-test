@@ -169,67 +169,7 @@ class LaravelLogView
         fclose($f);
         return $this->parseLog($output);
     }
-    /**
-     * Get tail logs in log file.
-     *
-     * @param int $seek
-     *
-     * @return array
-     */
-    public function tail($seek)
-    {
-        // Open the file
-        $f = fopen($this->filePath, 'rb');
-        if (!$seek) {
-            // Jump to last character
-            fseek($f, -1, SEEK_END);
-        } else {
-            fseek($f, abs($seek));
-        }
-        $output = '';
-        while (!feof($f)) {
-            $output .= fread($f, 4096);
-        }
-        $pos = ftell($f);
-        fclose($f);
-        $logs = [];
-        foreach ($this->parseLog(trim($output)) as $log) {
-            $logs[] = $this->renderTableRow($log);
-        }
-        return [$pos, $logs];
-    }
-    /**
-     * Render table row.
-     *
-     * @param $log
-     *
-     * @return string
-     */
-    protected function renderTableRow($log)
-    {
-        $color = self::$levelColors[$log['level']] ?? 'black';
-        $index = uniqid();
-        $button = '';
-        if (!empty($log['trace'])) {
-            $button = "<a class=\"btn btn-primary btn-xs\" data-toggle=\"collapse\" data-target=\".trace-{$index}\"><i class=\"fa fa-info\"></i>&nbsp;&nbsp;Exception</a>";
-        }
-        $trace = '';
-        if (!empty($log['trace'])) {
-            $trace = "<tr class=\"collapse trace-{$index}\">
-    <td colspan=\"5\"><div style=\"white-space: pre-wrap;background: #333;color: #fff; padding: 10px;\">{$log['trace']}</div></td>
-</tr>";
-        }
-        return <<<TPL
-<tr style="background-color: rgb(255, 255, 213);">
-    <td><span class="label bg-{$color}">{$log['level']}</span></td>
-    <td><strong>{$log['env']}</strong></td>
-    <td  style="width:150px;">{$log['time']}</td>
-    <td><code>{$log['info']}</code></td>
-    <td>$button</td>
-</tr>
-$trace
-TPL;
-    }
+
     /**
      * Parse raw log text to array.
      *

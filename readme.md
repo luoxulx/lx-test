@@ -10,6 +10,7 @@
 <p>php artisan key:generate</p>
 <p>php artisan jwt:secret</p>
 <p>迁移：php artisan migrate</p>
+<p>填充数据: php artisan db:seed</p>
 <p>回滚：php artisan migrate:rollback   状态：（status）</p>
 
 <p>Docker:docker-compose start/stop</p>

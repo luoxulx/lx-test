@@ -24,7 +24,7 @@ class UserController extends ApiController
         $this->user = $userRepository;
     }
 
-    public function user_info()
+    public function user_info(): \Illuminate\Http\JsonResponse
     {
         return $this->response->json([
             'roles'=>['admin'],
@@ -34,7 +34,8 @@ class UserController extends ApiController
         ]);
     }
 
-    public function transaction_list()
+
+    public function transaction_list(): \Illuminate\Http\JsonResponse
     {
         $data = [];
         for ($i = 1;$i <= 20; $i++) {
@@ -53,24 +54,31 @@ class UserController extends ApiController
         return $this->response->json($result);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $per_page = $request->get('per_page', 10);
         return $this->response->collection($this->user->page($per_page), new UserTransformer);
     }
 
-    public function store ()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store (Request $request): \Illuminate\Http\JsonResponse
     {
+        $this->user->store($request->all());
         return $this->response->withCreated();
     }
 
-    public function update()
+    public function update($id, Request $request): \Illuminate\Http\JsonResponse
     {
+        $this->user->updateColumn($id, $request->all());
         return $this->response->withPutted();
     }
 
-    public function destory()
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
+        $this->user->destroy($id);
         return $this->response->withNoContent();
     }
 }

@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->integer('commentable_id')->unsigned()->nullable(false);
             $table->char('commentable_type', 32)->nullable(false);
             $table->string('created_by', 100)->nullable()->comment('guest nickname');
-            $table->mediumText('content');
+            $table->mediumText('content')->comment('评论内容');
 
             $table->timestamps();
             $table->softDeletes();

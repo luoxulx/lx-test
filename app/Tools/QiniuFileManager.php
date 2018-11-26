@@ -35,7 +35,17 @@ class QiniuFileManager
        return $this->auth->uploadToken($this->bucketName);
     }
 
-    public function uploadToBucket()
+    public function uploadToBucket($key, $data, $params = null)
+    {
+        $upToken = $this->uploadToken();
+        $uploadMgr = new UploadManager();
+
+        list($ret, $err) = $uploadMgr->put($upToken, $key, $data, $params);
+
+        return $err || $ret;
+    }
+
+    public function putToBucket()
     {
         $upToken = $this->uploadToken();
         $uploadMgr = new UploadManager();

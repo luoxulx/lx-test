@@ -44,7 +44,7 @@ trait BaseRepository
      * @return bool|null
      * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy($id): ?bool
     {
         return $this->getById($id)->delete();
     }
@@ -76,7 +76,7 @@ trait BaseRepository
      * @param string $sort
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function page(int $per_page, array $sort=['created_at', 'desc'])
+    public function page(int $per_page = 10, array $sort=['created_at', 'desc'])
     {
 
         return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
