@@ -30,7 +30,7 @@ class ArticleController extends ApiController
      */
     public function index(Request $request)
     {
-        $per_page = $request->get('per_page', 10);
+        $per_page = intval($request->get('per_page', 10));
 
         return $this->response->collection($this->article->page($per_page), new ArticleTransformer());
     }

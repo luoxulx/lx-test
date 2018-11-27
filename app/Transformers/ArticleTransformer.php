@@ -20,6 +20,7 @@ class ArticleTransformer extends TransformerAbstract
         $res = $article->attributesToArray();
         $res['tags'] = $article->tags()->pluck('name');
         $res['category'] = $article->category()->value('name');
+        $res['user'] = $article->user()->get(['id','nickname']);
         return $res;
     }
 }

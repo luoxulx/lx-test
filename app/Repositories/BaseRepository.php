@@ -78,7 +78,9 @@ trait BaseRepository
      */
     public function page(int $per_page = 10, array $sort=['created_at', 'desc'])
     {
-
+        if ($per_page === 0) {
+            return $this->model->orderBy($sort[0], $sort[1])->get();
+        }
         return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
     }
 

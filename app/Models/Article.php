@@ -9,7 +9,7 @@
 namespace App\Models;
 
 
-use App\Scopes\StatusScope;
+use App\Scopes\DraftScope;
 
 class Article extends Models
 {
@@ -17,6 +17,8 @@ class Article extends Models
     protected $fillable = [
         'category_id',
         'user_id',
+        'is_draft',
+        'view_count',
         'title',
         'slug',
         'source',
@@ -42,7 +44,7 @@ class Article extends Models
     {
         parent::boot();
 
-        static::addGlobalScope(new StatusScope());
+        static::addGlobalScope(new DraftScope());
     }
 
     public function user()
@@ -89,7 +91,7 @@ class Article extends Models
     {
         $this->attributes['title'] = $value;
 
-        $this->setUniqueSlug($value, str_random(12));
+        $this->setUniqueSlug($value, str_random(7));
     }
 
     /**
@@ -108,4 +110,5 @@ class Article extends Models
 
         $this->attributes['slug'] = $slug;
     }
+
 }

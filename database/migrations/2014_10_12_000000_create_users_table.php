@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
 
             $table->tinyInteger('is_admin')->unsigned()->default(0);
             $table->rememberToken();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at');
             $table->timestamps();
             $table->softDeletes();
         });

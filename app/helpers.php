@@ -26,3 +26,28 @@ if (! function_exists('getFileSuffix')) {
         return $tempArr['extension'];
     }
 }
+
+
+if (! function_exists('isEnglish')) {
+    /**
+     * @param $value
+     * @return int
+     */
+    function isEnglish($value) {
+        return eregi('[a-zA-Z]', $value);
+    }
+}
+
+if (! function_exists('filterEmoji')) {
+    function filterEmoji($string)
+    {
+        $str = preg_replace_callback(
+            '/./u',
+            function (array $match) {
+                return strlen($match[0]) >= 4 ? '' : $match[0];
+            },
+            $string);
+
+        return $str;
+    }
+}
