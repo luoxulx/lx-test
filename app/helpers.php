@@ -14,6 +14,7 @@ if (! function_exists('operationColor')) {
 	}
 }
 
+
 if (! function_exists('randomFloat')) {
     function randomFloat($min = 0, $max = 1) {
         return $min + mt_rand() / mt_getrandmax() * ($max - $min);

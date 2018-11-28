@@ -51,10 +51,17 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], 
         'destroy' => 'api.comment.destroy',
     ], 'except'=>['create', 'edit']]);
 
-    // tool 部分接口
-    Route::post('/tool/qiniu/get_token', 'ToolController@qiniuToken');
 
     // extend
     Route::get('/extend/laravel_log', 'LaravelLogController@index');
+
+});
+
+//open api
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation']], function () {
+
+    // tool 部分接口
+    Route::post('/tool/image/upload', 'ImageController@store');
+    Route::get('/tool/image/list', 'ImageController@index');
 
 });

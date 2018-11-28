@@ -64,6 +64,21 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'qiniu' => [
+            'driver'  => 'qiniu',
+            'domains' => [
+                'default'   => env('QI_NIU_DOMAIN'), // 你的七牛域名
+                'https'     => env('QI_NIU_DOMAIN'), // 你的HTTPS域名
+                'custom'    => 'static.abc.com',          // Useless 没啥用，请直接使用上面的 default 项
+            ],
+            'access_key'=> env('QI_NIU_AK'),  // AccessKey
+            'secret_key'=> env('QI_NIU_SK'),  // SecretKey
+            'bucket'    => env('QI_NIU_BUCKET'),  // Bucket名字
+            'notify_url'=> '',  // 持久化处理回调地址
+            'access'    => 'public',  // 空间访问控制 public 或 private
+            'hotlink_prevention_key' => 'afc89ff8bd2axxxxxxxxxxxxxxbb', // CDN 时间戳防盗链的 key。 设置为 null 则不启用本功能。
+            'hotlink_prevention_key' => 'NcH9J0DGhZ8CE6cuZBHivG357IsqEUp1o8VJnEFI'
+        ],
     ],
 
 ];
