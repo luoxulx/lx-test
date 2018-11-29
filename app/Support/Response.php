@@ -59,11 +59,11 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withCreated($resource = null, TransformerAbstract $transformer = null)
+    public function withCreated($resource = null, TransformerAbstract $transformer = null): \Illuminate\Http\JsonResponse
     {
         $this->statusCode = HttpResponse::HTTP_CREATED;
 
-        if (is_null($resource)) {
+        if ($resource === null) {
             return $this->json();
         }
 
@@ -71,18 +71,11 @@ class Response
     }
 
     /**
-     * @param null $resource
-     * @param TransformerAbstract|null $transformer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withPutted($resource = null, TransformerAbstract $transformer = null)
+    public function withPutted(): \Illuminate\Http\JsonResponse
     {
-        $this->statusCode = HttpResponse::HTTP_NO_CONTENT;
-        if (is_null($resource)) {
-            return $this->json();
-        }
-
-        return $this->item($resource, $transformer);
+        return $this->setStatusCode(HttpResponse::HTTP_NO_CONTENT)->json();
     }
 
     /**
@@ -91,11 +84,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withNoContent()
+    public function withNoContent(): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_NO_CONTENT
-        )->json();
+        return $this->setStatusCode(HttpResponse::HTTP_NO_CONTENT)->json();
     }
 
     /**
@@ -105,11 +96,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withBadRequest($message = 'Bad Request')
+    public function withBadRequest($message = 'Tengine: Bad Request'): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_BAD_REQUEST
-        )->withError($message);
+        return $this->setStatusCode(HttpResponse::HTTP_BAD_REQUEST)->withError($message);
     }
 
     /**
@@ -119,11 +108,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withUnauthorized($message = 'Unauthorized')
+    public function withUnauthorized($message = 'Unauthorized'): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_UNAUTHORIZED
-        )->withError($message);
+        return $this->setStatusCode(HttpResponse::HTTP_UNAUTHORIZED)->withError($message);
     }
 
     /**
@@ -133,11 +120,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withForbidden($message = 'Forbidden')
+    public function withForbidden($message = 'Tengine: Forbidden'): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_FORBIDDEN
-        )->withError($message);
+        return $this->setStatusCode(HttpResponse::HTTP_FORBIDDEN)->withError($message);
     }
 
     /**
@@ -147,11 +132,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withNotFound($message = 'Not Found')
+    public function withNotFound($message = 'Not Found'): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_NOT_FOUND
-        )->withError($message);
+        return $this->setStatusCode(HttpResponse::HTTP_NOT_FOUND)->withError($message);
     }
 
     /**
@@ -161,11 +144,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withTooManyRequests($message = 'Too Many Requests')
+    public function withTooManyRequests($message = 'Too Many Requests'): \Illuminate\Http\JsonResponse
     {
-        return $this->setStatusCode(
-            HttpResponse::HTTP_TOO_MANY_REQUESTS
-        )->withError($message);
+        return $this->setStatusCode(HttpResponse::HTTP_TOO_MANY_REQUESTS)->withError($message);
     }
 
     /**
@@ -175,7 +156,7 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withInternalServer($message = 'Internal Server Error')
+    public function withInternalServer($message = 'Internal Tengine Server Error')
     {
         return $this->setStatusCode(
             HttpResponse::HTTP_INTERNAL_SERVER_ERROR
@@ -189,11 +170,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withError($message)
+    public function withError($message = 'Something Error'): \Illuminate\Http\JsonResponse
     {
-        return $this->json([
-            'messages' => is_array($message) ? $message : [$message]
-        ]);
+        return $this->json(['message' => $message, 'status' => false]);
     }
 
     /**
@@ -204,11 +183,9 @@ class Response
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function item($item, TransformerAbstract $transformer = null)
+    public function item($item, TransformerAbstract $transformer = null): \Illuminate\Http\JsonResponse
     {
-        return $this->json(
-            $this->transform->item($item, $transformer)
-        );
+        return $this->json($this->transform->item($item, $transformer));
     }
 
     /**
@@ -219,11 +196,9 @@ class Response
      * @throws \Exception
      * @return \Illuminate\Http\JsonResponse
      */
-    public function collection($items, TransformerAbstract $transformer = null)
+    public function collection($items, TransformerAbstract $transformer = null): \Illuminate\Http\JsonResponse
     {
-        return $this->json(
-            $this->transform->collection($items, $transformer)
-        );
+        return $this->json($this->transform->collection($items, $transformer));
     }
 
     /**
@@ -231,7 +206,7 @@ class Response
      * @param array $headers
      * @return \Illuminate\Http\JsonResponse
      */
-    public function json($data = [], array $headers = [])
+    public function json($data = [], array $headers = []): \Illuminate\Http\JsonResponse
     {
         return $this->response->json($data, $this->statusCode, $headers);
     }
@@ -243,7 +218,7 @@ class Response
      *
      * @return $this
      */
-    public function setStatusCode($statusCode)
+    public function setStatusCode($statusCode): self
     {
         $this->statusCode = $statusCode;
 
@@ -255,7 +230,7 @@ class Response
      *
      * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }

@@ -152,7 +152,6 @@ return [
          */
         // lx-new
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        \App\Tools\Qiniu\QiniuFilesystemServiceProvider::class,
 
         /*
          * Application Service Providers...

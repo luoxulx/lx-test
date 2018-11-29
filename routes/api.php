@@ -60,8 +60,10 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], 
 //open api
 Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation']], function () {
 
-    // tool 部分接口
+    // qiniu tool 部分接口
     Route::post('/tool/image/upload', 'ImageController@store');
-    Route::get('/tool/image/list', 'ImageController@index');
+    Route::post('/tool/image/token', 'ImageController@upload_token');
+    Route::post('/tool/image/list', 'ImageController@index');
+    Route::post('/tool/image/delete', 'ImageController@delete');
 
 });

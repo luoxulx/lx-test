@@ -8,35 +8,68 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Tools\Qiniu\QiniuStorage;
+use App\Tools\Qiniu\QiniuTool;
 use Illuminate\Http\Request;
 
 
 class ImageController extends ApiController
 {
 
-    public function store(Request $request)
+    private $disk;
+
+    public function __construct()
     {
-        $prefix = $request->post('prefix', '/');
-        if (! $request->file('file')) {
-            return $this->response->json(['message'=>'NULL file']);
-        }
-        $disk = QiniuStorage::disk('qiniu');
-        $response = $disk->put($prefix, $request->file('file'));var_dump($response);
+        parent::__construct();
 
-        $imagePreviewUrl = $disk->imagePreviewUrl($response);
-        var_dump($imagePreviewUrl);die;
-
+        $this->disk = new QiniuTool();
     }
 
     public function index(Request $request)
     {
-        $prefix = $request->post('prefix', '/');
+        $path = $request->post('prefix') ?? ''; // 目录带 /
+        $limit = $request->post('limit', 500);
+        $list = $this->disk->files($path, $limit);
 
-        $disk = QiniuStorage::disk('qiniu');
-
-        $response = $disk->files($prefix);
-
-        return $this->response->json(['files'=>$response]);
+        return $this->response->json($list);
     }
+
+    public function upload_token()
+    {
+        return $this->response->json([
+            'qiniu_token' => $this->disk->uploadToken(),
+            'qiniu_key' => $this->disk->filenameRandom()
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $path = 'test_file/'; // 目录带 /
+        $image = $request->file('image');
+        $ext = $image->getClientOriginalExtension();
+
+        if (! $request->file('image')) {
+            return $this->response->withBadRequest('Bad Request with null image');
+        }
+
+        $response = $this->disk->putFile($path, $image, $ext);
+
+        return $this->response->json($response);
+    }
+
+    public function delete(Request $request)
+    {
+        $filename = $request->post('filename');
+
+        if (!$filename) {
+            return $this->response->withBadRequest('Bad Request with null filename');
+        }
+
+        $res = $this->disk->deleteOriginFile($filename);
+
+        if ($res === null) {
+            return $this->response->withNoContent();
+        }
+        return $this->response->withBadRequest('Bad Request with no such file or directory');
+    }
+
 }
