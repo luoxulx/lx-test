@@ -102,7 +102,6 @@ class QiniuTool
         return $bucketMgr->delete(config('my.QNConfig.bucket'), $filename);
     }
 
-
     public function filenameRandom($ext = '')
     {
         if ($ext) {
