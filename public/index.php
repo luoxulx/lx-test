@@ -6,9 +6,6 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Headers:Content-Type,Authorization,Access-Key');
-header('Access-Control-Allow-Methods:GET, POST, OPTIONS, PUT, DELETE');
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

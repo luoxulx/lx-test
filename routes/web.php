@@ -14,8 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/login', 'Auth\LoginController@index')->name('login');
-Route::group(['namespace'=>'Front'], function (){
-    Route::get('/xxx', 'ArticleController@index');
-    Route::get('/{slug}', 'ArticleController@show');
-});
+//Route::group(['namespace'=>'Front'], function (){
+//    Route::get('/xxx', 'ArticleController@index');
+//    Route::get('/{slug}', 'ArticleController@show');
+//});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

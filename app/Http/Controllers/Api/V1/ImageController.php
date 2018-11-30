@@ -30,7 +30,7 @@ class ImageController extends ApiController
         $limit = $request->post('limit', 500);
         $list = $this->disk->files($path, $limit);
 
-        return $this->response->json($list);
+        return $this->response->json(['data'=>$list, 'total'=>\count($list)]);
     }
 
     public function upload_token()

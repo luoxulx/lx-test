@@ -22,7 +22,7 @@ class AuthController extends ApiController
      *
      * @var string
      */
-    protected $redirectTo = '/xxx-aaa';
+    protected $redirectTo = 'http://cdn2.lnmpa.top/';
 
 
     public function login(Request $request)

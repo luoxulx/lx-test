@@ -21,24 +21,6 @@ if (! function_exists('randomFloat')) {
     }
 }
 
-if (! function_exists('getFileSuffix')) {
-    function getFileSuffix($fileUrl) {
-        $tempArr =  pathinfo($fileUrl);
-        return $tempArr['extension'];
-    }
-}
-
-
-if (! function_exists('isEnglish')) {
-    /**
-     * @param $value
-     * @return int
-     */
-    function isEnglish($value) {
-        return eregi('[a-zA-Z]', $value);
-    }
-}
-
 if (!function_exists('v4UUID')) {
     function v4UUID($namespace = '')
     {
