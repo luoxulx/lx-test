@@ -91,7 +91,12 @@ class Article extends Models
     {
         $this->attributes['title'] = $value;
 
-        $this->setUniqueSlug($value, str_random(7));
+        // $this->setUniqueSlug($value, str_random(7));
+    }
+
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = v4UUID($value.str_random(5));
     }
 
     /**

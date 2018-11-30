@@ -39,12 +39,37 @@ if (!function_exists('v4UUID')) {
 
         return substr($hash_value,0,8) . '-' .
             substr($hash_value,8,4) . '-' .
-            substr($hash_value,12,4) . '-' .
-            substr($hash_value,16,4) . '-' .
+            //substr($hash_value,12,4) . '-' .
+            //substr($hash_value,16,4) . '-' .
             substr($hash_value,20,12);
     }
 }
 
+
+if (! function_exists('buildPicUrl')) {
+    /**
+     * 转换图片url
+     * @param null $url
+     * @param string $style
+     * @param bool $https
+     * @return string
+     */
+    function buildPicUrl($url=null, $style='-pic640x320', $https=false)
+    {
+        if ($url === null) {
+            return '/svg/default.png';
+        }
+        if (! in_array($style, ['-pic640x320', '-pic240x120'])) {
+            return 'error';
+        }
+        $domain = 'http://cdn.lnmpa.top/';
+
+        if ($https) {
+            $domain = 'https://cdn.lnmpa.top/';
+        }
+        return $domain . $url . $style;
+    }
+}
 
 if (! function_exists('filterEmoji')) {
     function filterEmoji($string)

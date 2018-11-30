@@ -3,14 +3,14 @@
  * Created by PhpStorm.
  * User: luoxulx
  * Date: 2018/10/28
- * Time: 23:39
+ * Time: 23:38
  */
 
 namespace App\Http\Controllers\Front;
 
 use App\Repositories\ArticleRepository;
 
-class ArticleController extends FrontendController
+class HomeController extends FrontendController
 {
 
     protected $article;
@@ -26,13 +26,6 @@ class ArticleController extends FrontendController
         $articles = $this->article->page(10);
         $tags = $this->tags;
 
-        return view('article.index', compact('articles', 'tags'));
-    }
-
-    public function show($slug)
-    {
-        $article = $this->article->getBySlug($slug);
-
-        return view('article.detail', compact('article'));
+        return view('home.index', compact('articles', 'tags'));
     }
 }

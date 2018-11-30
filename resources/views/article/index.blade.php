@@ -1,22 +1,44 @@
-@extends('home.master')
+@extends('layouts.home')
 @section('content')
-    <div class="col-md-8 blog-main">
-        <h3 class="pb-3 mb-4 font-italic border-bottom">From the Firehose</h3>
-        <!-- /.post list start -->
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h2 class="my-4">Page Heading
+            <small>Secondary Text</small>
+        </h2>
+
+        <!-- Blog Post -->
         @forelse($articles as $item)
-        <div class="blog-post">
-            <h3 class="blog-post-title"><a href="{{ url($item->slug) }}">{{ $item->title }}</a></h3>
-            <p class="blog-post-meta"><em>{{ date('F d Y D') }}</em> <cite>by</cite>&nbsp;&nbsp;<a href="javascript:;">Chris</a></p>
-            <p><a href="{{ url($item->slug) }}">{{ $item->description }}</a></p>
-        </div>
+            <div class="card mb-4">
+                <img class="card-img-top" src="{{ buildPicUrl($item->thumbnail) }}" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-title">{{ $item->title }}</h2>
+                    <p>{{ $item->description }}</p>
+                    <a href="{{ url($item->slug) }}" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted">
+                    {{ $item->created_at }}
+                    <a href="#">Start Bootstrap</a>
+                </div>
+            </div>
         @empty
-            <cite>NULL</cite>
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 class="alert-heading">Warning!</h4>
+                <p class="mb-0">Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra
+                    augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl
+                        consectetur et</a>.</p>
+            </div>
         @endforelse
-        <!-- /.post list end -->
-        <nav class="blog-pagination">
-            {{ $articles->links() }}
-        </nav>
+    <!-- Pagination -->
+        {{ $articles->links() }}
     </div>
-    <!-- /.blog-main -->
-    @include('home.aside')
-@stop
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        @include('layouts.sidebar')
+    </div>
+
+    </div>
+    </div>
+@endsection
