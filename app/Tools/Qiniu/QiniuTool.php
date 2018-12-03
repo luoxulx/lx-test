@@ -65,15 +65,7 @@ class QiniuTool
 
         $result = $this->disk->putFile($this->token, $key, $binaryData);
 
-        $pic_style = config('my.QNConfig.pic_style');
-        $domain = config('my.QNConfig.domain');
-
-        $temp = [];
-        foreach ($pic_style as $key=>$val) {
-            $temp[$key] = $domain . $result[0]['key'] . $val;
-        }
-
-        return $temp;
+        return ['hash'=>$result[0]['hash'], 'url'=>$result[0]['key']];
     }
 
     /**
@@ -85,13 +77,6 @@ class QiniuTool
     {
         $bucketMgr = new BucketManager($this->auth);
         $list = $bucketMgr->listFiles(config('my.QNConfig.bucket'), $path, '', $limit, '/');
-
-        $domain = config('my.QNConfig.domain');
-
-        foreach ($list[0]['items'] as $key=>$val)
-        {
-            $list[0]['items'][$key]['url'] = 'http://cdn.lnmpa.top/' . $val['key'] . '-thumbnail640x640';
-        }
 
         return $list[0]['items'];
     }

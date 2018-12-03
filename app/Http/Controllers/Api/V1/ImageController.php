@@ -43,7 +43,7 @@ class ImageController extends ApiController
 
     public function store(Request $request)
     {
-        $path = 'test_file/'; // 目录带 /
+        $path = $request->post('path','test_file/'); // 目录带 /
         $image = $request->file('image');
         $ext = $image->getClientOriginalExtension();
 

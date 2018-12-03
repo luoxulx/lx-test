@@ -39,8 +39,8 @@ if (!function_exists('v4UUID')) {
 
         return substr($hash_value,0,8) . '-' .
             substr($hash_value,8,4) . '-' .
-            //substr($hash_value,12,4) . '-' .
-            //substr($hash_value,16,4) . '-' .
+            substr($hash_value,12,4) . '-' .
+            substr($hash_value,16,4) . '-' .
             substr($hash_value,20,12);
     }
 }

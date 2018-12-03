@@ -89,15 +89,15 @@ class Article extends Models
      */
     public function setTitleAttribute($value)
     {
+        $this->setUniqueSlug($value, str_random(5));
         $this->attributes['title'] = $value;
-
-        // $this->setUniqueSlug($value, str_random(7));
     }
 
-    public function setSlugAttribute($value)
-    {
-        $this->attributes['slug'] = v4UUID($value.str_random(5));
-    }
+//    public function setSlugAttribute($value)
+//    {
+//        $slug = str_slug();
+//        $this->attributes['slug'] = v4UUID($value.str_random(5));
+//    }
 
     /**
      * Set the unique slug.
@@ -106,7 +106,7 @@ class Article extends Models
      * @param $extra
      */
     public function setUniqueSlug($value, $extra) {
-        $slug = str_slug($value.'-'.$extra);
+        $slug = str_slug($value);
 
         if (static::whereSlug($slug)->exists()) {
             $this->setUniqueSlug($slug, (int) $extra + 1);
