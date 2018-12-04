@@ -14,8 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // to fixed mysql 5.5
         Schema::defaultStringLength(191);
+        // to share the common data for the blade templates
+        view()->composer('*', 'App\Http\Controllers\Front\HomeController@common_data');
     }
 
     /**

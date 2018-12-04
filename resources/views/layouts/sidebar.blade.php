@@ -5,8 +5,8 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for...">
             <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Go!</button>
-                </span>
+                <button class="btn btn-secondary" type="button">Go!</button>
+            </span>
         </div>
     </div>
 </div>
@@ -18,16 +18,20 @@
         <div class="row">
             <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="javascript:;">Web Design</a>
-                    </li>
+                    @forelse($common_data['all_tags'] as $item)
+                        <li><a href="javascript:;">{{ $item['name'] }}</a></li>
+                    @empty
+                        <li><a>null</a></li>
+                    @endforelse
                 </ul>
             </div>
             <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="javascript:;">JavaScript</a>
-                    </li>
+                    @forelse($common_data['all_categories'] as $item)
+                    <li><a href="javascript:;">{{ $item['name'] }}</a></li>
+                    @empty
+                        <li><a>null</a></li>
+                    @endforelse
                 </ul>
             </div>
         </div>

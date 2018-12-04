@@ -65,5 +65,7 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation']], function () 
     Route::post('/tool/image/token', 'ImageController@upload_token');
     Route::post('/tool/image/list', 'ImageController@index');
     Route::post('/tool/image/delete', 'ImageController@delete');
+    Route::post('/mail/send', 'MailController@sendMail');
+    Route::get('/mail/show', 'MailController@show');
 
 });

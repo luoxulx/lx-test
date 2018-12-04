@@ -20,6 +20,5 @@ Route::group(['namespace'=>'Front'], function (){
 
     Route::get('/post', 'ArticleController@index');
     Route::get('/{slug}', 'ArticleController@show');
-
 });
 

@@ -8,25 +8,27 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\ArticleRepository;
 
-class ArticleController extends FrontendController
+class ArticleController extends Controller
 {
 
     protected $article;
 
     public function __construct(ArticleRepository $article)
     {
-        parent::__construct();
         $this->article = $article;
     }
 
     public function index()
     {
         $articles = $this->article->page(10);
-        $tags = $this->tags;
+//        $articles = Cache::remember('test_post',10,function(){
+//            return $this->article->page(10);
+//        });
 
-        return view('article.index', compact('articles', 'tags'));
+        return view('article.index', compact('articles'));
     }
 
     public function show($slug)

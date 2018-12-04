@@ -28,7 +28,11 @@ class QiniuTool
         $this->disk = new UploadManager();
     }
 
-    public function uploadToken()
+    /**
+     * 返回上传token
+     * @return string
+     */
+    public function uploadToken(): string
     {
         return $this->token;
     }
@@ -40,7 +44,7 @@ class QiniuTool
      * @param $ext
      * @return array
      */
-    public function put($path, $binaryData, $ext)
+    public function put($path, $binaryData, $ext): array
     {
         $filename = $this->filenameRandom($ext);
         $key = $path.$filename;
@@ -58,7 +62,14 @@ class QiniuTool
         return $temp;
     }
 
-    public function putFile($path, $binaryData, $ext)
+    /**
+     * 文件上传
+     * @param $path 路径/
+     * @param $binaryData
+     * @param $ext
+     * @return array
+     */
+    public function putFile($path, $binaryData, $ext): array
     {
         $filename = $this->filenameRandom($ext);
         $key = $path.$filename;
@@ -81,19 +92,41 @@ class QiniuTool
         return $list[0]['items'];
     }
 
+    /**
+     * 当前bucket下所有路径前缀
+     * @return string[]
+     */
+    public function allDir()
+    {
+        $bucketMgr = new BucketManager($this->auth);
+        return $bucketMgr->buckets();
+    }
+
+    /**
+     * 删除远程文件
+     * @param $filename filename带路径前缀
+     * @return mixed
+     */
     public function deleteOriginFile($filename)
     {
         $bucketMgr = new BucketManager($this->auth);
         return $bucketMgr->delete(config('my.QNConfig.bucket'), $filename);
     }
 
-    public function filenameRandom($ext = '')
+    /**
+     * 生成文件名 或 文件 key
+     * @param string $ext
+     * @return string
+     */
+    public function filenameRandom($ext = ''): string
     {
+        $key = hash('ripemd160', uniqid('laravel_', true).time());
         if ($ext) {
-            return hash('ripemd160', uniqid('laravel_', true).time()).'.'.$ext;
+            $key .= $ext;
+            // $key = hash('ripemd160', uniqid('laravel_', true).time()).'.'.$ext;
         }
-        else {
-            return hash('ripemd160', uniqid('laravel_', true).time());
-        }
+        return $key;
     }
+
+
 }

@@ -8,26 +8,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Tools\QiniuFileManager;
 
 class ToolController extends ApiController
 {
 
-    /**
-     * @param QiniuFileManager $qiniuFileManager
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function qiniuToken(QiniuFileManager $qiniuFileManager)
-    {
-        return $this->response->json(['token'=>$qiniuFileManager->uploadToken()]);
-    }
 
-    public function puFileToBucket()
-    {
-        $object = new QiniuFileManager();
-
-        $res = $object->uploadToBucket('xxx', $_FILES);
-
-        return $res;
-    }
 }

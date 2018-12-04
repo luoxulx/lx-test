@@ -15,6 +15,10 @@
 
 <p>Docker:docker-compose start/stop</p>
 
+记录:
+创建 Markdown 模板,执行此命令之后，会在 app/mail 目录下面生成文件 Activate.php：
+php artisan make:mail Activate --markdown=emails.activate
+
 
 
 

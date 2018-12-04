@@ -17,6 +17,7 @@ class OperationLogTransformer extends TransformerAbstract
 
     public function transform(OperationLog $operationLog)
     {
-        return $operationLog->attributesToArray();
+        $data = $operationLog->attributesToArray();
+        $data ['color'] = array_get(OperationLog::$methodColors, $data['method'], 'grey');
     }
 }

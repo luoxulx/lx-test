@@ -33,6 +33,11 @@ class ImageController extends ApiController
         return $this->response->json(['data'=>$list, 'total'=>\count($list)]);
     }
 
+    public function allDir()
+    {
+        return $this->response->json(['data'=>$this->disk->allDir()]);
+    }
+
     public function upload_token()
     {
         return $this->response->json([

@@ -79,7 +79,7 @@ class Article extends Models
             'raw'  => strip_tags($value),
             'html' => $value
         ];
-        $this->attributes['content'] = json_encode($data);
+        $this->attributes['content'] = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
     /**
