@@ -20,7 +20,7 @@ class CreateArticlesTable extends Migration
             $table->tinyInteger('is_draft')->unsigned()->default(0)->comment('是否草稿');
             $table->integer('view_count')->unsigned()->default(0)->comment('点击查看计数');
             $table->string('title', 255)->nullable(false);
-            $table->string('slug')->unique()->nullable(false)->index();
+            $table->string('slug')->unique()->nullable(false);
             $table->string('source', 255)->comment('来源网址');
             $table->string('description', 255)->nullable()->comment('描述');
             $table->string('thumbnail', 100)->nullable()->comment('缩略图');
@@ -28,6 +28,8 @@ class CreateArticlesTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('slug');
         });
     }
 

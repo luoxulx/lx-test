@@ -30,17 +30,18 @@ class TagController extends ApiController
     public function index(Request $request)
     {
         $per_page = $request->get('per_page', 10);
-        return $this->response->collection($this->tag->page($per_page), new TagTransformer());
+        return $this->response->collection($this->tag->paginate($per_page), new TagTransformer());
     }
 
     public function store(Request $request)
     {
-        return $this->response->withCreated($this->tag->store($request->all()), new TagTransformer());
+        return $this->response->withCreated($this->tag->create($request->all()), new TagTransformer());
     }
 
     public function update(Request $request, $id)
     {
-        return $this->response->withPutted($this->tag->update($id, $request->all()), new TagTransformer());
+        $this->tag->update($id, $request->all());
+        return $this->response->withPutted();
     }
 
     public function destroy($id)

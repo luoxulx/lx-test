@@ -18,7 +18,7 @@ class CreateOperationLogsTable extends Migration
             $table->tinyInteger('user_id');
             $table->string('path',128);
             $table->char('method',10)->index();
-            $table->string('ip',16);
+            $table->ipAddress('ip');
             $table->longText('request')->comment('request header && content,by json_encode');
             $table->tinyInteger('jwt_auth')->default(0)->comment('1:jwt_auth;0:NO');
 

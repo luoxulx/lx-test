@@ -11,12 +11,8 @@ namespace App\Repositories;
 
 use App\Models\Category;
 
-class CategoryRepository
+class CategoryRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(Category $category)
     {

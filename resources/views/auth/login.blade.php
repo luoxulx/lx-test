@@ -43,7 +43,7 @@
                             <label for="captcha" class="col-md-4 col-form-label text-md-right">验证码</label>
 
                             <div class="col-md-4">
-                                <input id="captcha" type="text" value="{{ old('captcha') }}" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}" name="captcha" required>
+                                <input id="captcha" type="text" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}" name="captcha" required>
                             </div>
                             <div class="col-md-4" style="padding-left: 0;padding-right: 0;">
                                 <img src="{{captcha_src()}}" style="cursor: pointer" onclick="this.src='{{captcha_src()}}'+Math.random()">

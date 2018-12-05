@@ -8,25 +8,51 @@
 
 namespace App\Repositories;
 
+use App\Models\Models;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 
-trait BaseRepository
+class BaseRepository implements BaseRepositoryInterface
 {
+
     /**
-     * @var $model Model
+     * @var Models $model
      */
     protected $model;
 
-
     /**
-     * Update columns in the record by id.
-     *
-     * @param $id
-     * @param $input
-     * @return bool
+     * @param int $id
+     * @return Collection
      */
-    public function updateColumn($id, $input)
+    public function getById(int $id)
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'])
+    {
+        return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
+    }
+
+    public function all($columns = array('*'))
+    {
+        return $this->model->get($columns);
+    }
+
+    public function getFieldValue(int $id, string $column)
+    {
+        // TODO: Implement getFieldValue() method.
+    }
+
+    public function create($input)
+    {
+        $this->model->fill($input);
+
+        $this->model->save();
+
+        return $this->model;
+    }
+
+    public function updateColumn(int $id, $input) :bool
     {
         $this->model = $this->getById($id);
 
@@ -37,91 +63,33 @@ trait BaseRepository
         return $this->model->save();
     }
 
-    /**
-     * Destroy a model.
-     *
-     * @param $id
-     * @return bool|null
-     * @throws \Exception
-     */
-    public function destroy($id): ?bool
+    public function update(int $id, $input)
+    {
+        $this->model = $this->getById($id);
+
+        $this->model->fill($input);
+
+        return $this->model->save();
+    }
+
+    public function destroy(int $id)
     {
         return $this->getById($id)->delete();
     }
 
-    /**
-     * Get model by id.
-     *
-     * @param $id
-     * @return Model
-     */
-    public function getById($id)
+    public function getCount()
     {
-        return $this->model->findOrFail($id);
+        return $this->model->count();
     }
 
-    /**
-     * Get all the records
-     * @param array $columns
-     * @return Collection
-     */
-    public function all($columns = array('*'))
+    public function setDecrement(int $id, string $column, int $val = 0)
     {
-        return $this->model->get($columns);
+
     }
 
-    /**
-     * @param integer $per_page
-     * @param string $sortColumn
-     * @param string $sort
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function page(int $per_page = 10, array $sort=['created_at', 'desc'])
+    public function setIncrement(int $id, string $column, int $val = 0)
     {
-        if ($per_page === 0) {
-            return $this->model->orderBy($sort[0], $sort[1])->get();
-        }
-        return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
+        // TODO: Implement setIncrement() method.
     }
 
-    /**
-     * Store a new record.
-     *
-     * @param  $input
-     * @return Model
-     */
-    public function store($input)
-    {
-        return $this->save($this->model, $input);
-    }
-
-    /**
-     * Update a record by id.
-     *
-     * @param  $id
-     * @param  $input
-     * @return Model
-     */
-    public function update($id, $input)
-    {
-        $this->model = $this->getById($id);
-
-        return $this->save($this->model, $input);
-    }
-
-    /**
-     * Save the input's data.
-     *
-     * @param  $model
-     * @param  $input
-     * @return Model
-     */
-    public function save($model, $input)
-    {
-        $model->fill($input);
-
-        $model->save();
-
-        return $model;
-    }
 }

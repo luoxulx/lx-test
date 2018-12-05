@@ -11,12 +11,8 @@ namespace App\Repositories;
 
 use App\Models\Menu;
 
-class MenuRepository
+class MenuRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(Menu $menu)
     {

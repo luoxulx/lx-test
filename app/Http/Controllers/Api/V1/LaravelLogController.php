@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 class LaravelLogController extends ApiController
 {
 
-
     public function index(Request $request)
     {
         $offset = $request->get('offset');

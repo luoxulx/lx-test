@@ -28,6 +28,6 @@ class OperationController extends ApiController
     {
         $per_page = $request->get('per_page', 10);
 
-        return $this->response->collection($this->operation->page($per_page), new OperationLogTransformer());
+        return $this->response->collection($this->operation->paginate($per_page), new OperationLogTransformer());
     }
 }

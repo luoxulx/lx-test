@@ -11,10 +11,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Tools\Qiniu\QiniuTool;
 use Illuminate\Http\Request;
 
-
-class ImageController extends ApiController
+class QniuFileController extends ApiController
 {
-
     private $disk;
 
     public function __construct()
@@ -49,10 +47,10 @@ class ImageController extends ApiController
     public function store(Request $request)
     {
         $path = $request->post('path','test_file/'); // 目录带 /
-        $image = $request->file('image');
+        $image = $request->file('file');
         $ext = $image->getClientOriginalExtension();
 
-        if (! $request->file('image')) {
+        if (! $request->file('file')) {
             return $this->response->withBadRequest('Bad Request with null image');
         }
 
@@ -76,5 +74,4 @@ class ImageController extends ApiController
         }
         return $this->response->withBadRequest('Bad Request with no such file or directory');
     }
-
 }

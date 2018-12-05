@@ -16,6 +16,7 @@ class MenuController extends ApiController
 {
 
     protected $menu;
+
     public function __construct(MenuRepository $menuRepository)
     {
         parent::__construct();

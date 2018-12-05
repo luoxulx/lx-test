@@ -32,7 +32,7 @@ class ArticleController extends ApiController
     {
         $per_page = intval($request->get('per_page', 10));
 
-        return $this->response->collection($this->article->page($per_page), new ArticleTransformer());
+        return $this->response->collection($this->article->paginate($per_page), new ArticleTransformer());
     }
 
     public function show($id)
@@ -42,12 +42,13 @@ class ArticleController extends ApiController
 
     public function store(Request $request)
     {
-        return $this->response->withCreated($this->article->store($request->all()), new ArticleTransformer());
+        return $this->response->withCreated($this->article->create($request->all()), new ArticleTransformer());
     }
 
     public function update(Request $request, $id)
     {
-        return $this->response->withPutted($this->article->update($id, $request->all()), new ArticleTransformer());
+        $this->article->update($id, $request->all());
+        return $this->response->withPutted();
     }
 
     public function destroy($id)

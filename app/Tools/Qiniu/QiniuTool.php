@@ -64,7 +64,7 @@ class QiniuTool
 
     /**
      * 文件上传
-     * @param $path 路径/
+     * @param $path     路径/
      * @param $binaryData
      * @param $ext
      * @return array
@@ -80,8 +80,8 @@ class QiniuTool
     }
 
     /**
-     * @param $path 公共前缀
-     * @param int $limit 单次列举个数限制
+     * @param $path     公共前缀
+     * @param int $limit    单次列举个数限制
      * @return mixed
      */
     public function files($path, $limit = 1000)
@@ -104,7 +104,7 @@ class QiniuTool
 
     /**
      * 删除远程文件
-     * @param $filename filename带路径前缀
+     * @param $filename     filename带路径前缀
      * @return mixed
      */
     public function deleteOriginFile($filename)

@@ -12,11 +12,11 @@
 |
 */
 
-Route::post('/login/login', 'Api\\V1\\AuthController@login');
+Route::post('/login/login', 'Api\\V1\\AuthController@login')->name('api.login.login');
 
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], function () { //'middleware'=>['auth:api']
+Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:api', 'operation']
 
-    Route::post('/login/logout', 'AuthController@logout');
+    Route::post('/login/logout', 'AuthController@logout')->name('api.login.logout');
     Route::get('/user/user_info', 'UserController@user_info');
     Route::get('/user/transaction/list', 'UserController@transaction_list');
 
@@ -53,7 +53,7 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], 
 
 
     // extend
-    Route::get('/extend/laravel_log', 'LaravelLogController@index');
+    Route::get('/extend/laravel_log', 'LaravelLogController@index')->name('api.extend.laravel_log');
 
 });
 
@@ -61,10 +61,10 @@ Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], 
 Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation']], function () {
 
     // qiniu tool 部分接口
-    Route::post('/tool/image/upload', 'ImageController@store');
-    Route::post('/tool/image/token', 'ImageController@upload_token');
-    Route::post('/tool/image/list', 'ImageController@index');
-    Route::post('/tool/image/delete', 'ImageController@delete');
+    Route::post('/qiniu_file/upload', 'QniuFileController@store')->name('api.qiniu_file.upload');
+    Route::post('/qiniu_file/token', 'QniuFileController@upload_token')->name('api.qiniu_file.upload_token');
+    Route::post('/qiniu_file/list', 'QniuFileController@index')->name('api.qiniu_file.index');
+    Route::post('/qiniu_file/delete', 'QniuFileController@delete')->name('api.qiniu_file.delete');
     Route::post('/mail/send', 'MailController@sendMail');
     Route::get('/mail/show', 'MailController@show');
 

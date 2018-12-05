@@ -11,12 +11,8 @@ namespace App\Repositories;
 
 use App\Models\Tag;
 
-class TagRepository
+class TagRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(Tag $tag)
     {

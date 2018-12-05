@@ -10,9 +10,12 @@ namespace App\Models;
 
 
 use App\Scopes\DraftScope;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Article extends Models
 {
+
+    use Sluggable;
 
     protected $fillable = [
         'category_id',
@@ -31,10 +34,6 @@ class Article extends Models
         'content' => 'array'
     ];
 
-    protected $hidden = [
-        'deleted_at'
-    ];
-
     /**
      * The "booting" method of the model.
      *
@@ -45,6 +44,15 @@ class Article extends Models
         parent::boot();
 
         static::addGlobalScope(new DraftScope());
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 
     public function user()
@@ -67,6 +75,11 @@ class Article extends Models
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+//    public function enInfo()
+//    {
+//        return $this->hasOne(EnArticle::class,'article_id','id');
+//    }
+
 
     /**
      * Set the content attribute.
@@ -79,41 +92,7 @@ class Article extends Models
             'raw'  => strip_tags($value),
             'html' => $value
         ];
-        $this->attributes['content'] = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Set the title and the readable slug.
-     *
-     * @param string $value
-     */
-    public function setTitleAttribute($value)
-    {
-        $this->setUniqueSlug($value, str_random(5));
-        $this->attributes['title'] = $value;
-    }
-
-//    public function setSlugAttribute($value)
-//    {
-//        $slug = str_slug();
-//        $this->attributes['slug'] = v4UUID($value.str_random(5));
-//    }
-
-    /**
-     * Set the unique slug.
-     *
-     * @param $value
-     * @param $extra
-     */
-    public function setUniqueSlug($value, $extra) {
-        $slug = str_slug($value);
-
-        if (static::whereSlug($slug)->exists()) {
-            $this->setUniqueSlug($slug, (int) $extra + 1);
-            return;
-        }
-
-        $this->attributes['slug'] = $slug;
+        $this->attributes['content'] = json_encode($data);
     }
 
 }

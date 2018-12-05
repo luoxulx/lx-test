@@ -28,9 +28,9 @@ class UserController extends ApiController
     {
         return $this->response->json([
             'roles'=>['admin'],
-            'introduction'=>'adminxx',
+            'introduction'=>'test-test-14k',
             'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-            'name'=>'adminsx'
+            'name'=>'14k'
         ]);
     }
 
@@ -39,7 +39,7 @@ class UserController extends ApiController
     {
         $data = [];
         for ($i = 1;$i <= 20; $i++) {
-            $data[$i]['order_no'] = str_random(8).'-'.str_random(8).'-'.str_random(8);
+            $data[$i]['order_no'] = v4UUID('test');
             $data[$i]['timestamp'] = time();
             $data[$i]['username'] = str_random(8);
             $data[$i]['price'] = round(randomFloat(650,15000), 3);
@@ -57,7 +57,7 @@ class UserController extends ApiController
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $per_page = $request->get('per_page', 10);
-        return $this->response->collection($this->user->page($per_page), new UserTransformer);
+        return $this->response->collection($this->user->paginate($per_page), new UserTransformer);
     }
 
     /**
@@ -66,13 +66,13 @@ class UserController extends ApiController
      */
     public function store (Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->user->store($request->all());
+        $this->user->create($request->all());
         return $this->response->withCreated();
     }
 
     public function update($id, Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->user->updateColumn($id, $request->all());
+        $this->user->update($id, $request->all());
         return $this->response->withPutted();
     }
 

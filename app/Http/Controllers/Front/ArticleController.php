@@ -23,7 +23,7 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = $this->article->page(10);
+        $articles = $this->article->paginate(10);
 //        $articles = Cache::remember('test_post',10,function(){
 //            return $this->article->page(10);
 //        });

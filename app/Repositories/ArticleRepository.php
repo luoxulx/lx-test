@@ -11,21 +11,19 @@ namespace App\Repositories;
 
 use App\Models\Article;
 
-class ArticleRepository
+class ArticleRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(Article $article)
     {
         $this->model = $article;
     }
 
-    public function store(array $input)
+    public function create($input)
     {
-        $article = $this->model->create($input);
+        $article = $this->model->fill($input);
+
+        $this->model->save();
 
         if (is_array($input['tags']) && current($input['tags'])) {
             $this->syncTag($article, $input['tags']);
@@ -55,7 +53,7 @@ class ArticleRepository
      * @param  array $data
      * @return boolean
      */
-    public function update(int $id, array $data)
+    public function update(int $id, $data)
     {
         $article = $this->model->findOrFail($id);
 

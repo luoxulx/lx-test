@@ -11,12 +11,8 @@ namespace App\Repositories;
 
 use App\Models\OperationLog;
 
-class OperationLogRepository
+class OperationLogRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(OperationLog $operationLog)
     {

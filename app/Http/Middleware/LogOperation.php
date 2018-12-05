@@ -27,7 +27,7 @@ class LogOperation
                 'path'    => substr($request->path(), 0, 255),
                 'method'  => $request->method(),
                 'ip'      => $request->getClientIp(),
-                'request'   => json_encode(['header'=>$request->headers->all(), 'body'=>$request->input()], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+                'request'   => json_encode(['header'=>$request->headers->all(), 'body'=>$request->input()]),
                 'jwt_auth' => $request->hasHeader('Authorization') ? 1 : 0
             );
 

@@ -54,19 +54,20 @@ if (! function_exists('buildPicUrl')) {
      * @param bool $https
      * @return string
      */
-    function buildPicUrl($url=null, $style='-pic640x320', $https=false)
+    function buildPicUrl($url=null, $style='-pic640x320', $https=true)
     {
         if ($url === null) {
             return '/svg/default.png';
         }
-        if (! in_array($style, ['-pic640x320', '-pic240x120'])) {
-            return 'error';
-        }
         $domain = 'http://cdn.lnmpa.top/';
 
-        if ($https) {
+        if ($https === true) {
             $domain = 'https://cdn.lnmpa.top/';
         }
+        if (! in_array($style, ['-pic640x320', '-pic240x120'])) {
+            return $domain . $url;
+        }
+
         return $domain . $url . $style;
     }
 }

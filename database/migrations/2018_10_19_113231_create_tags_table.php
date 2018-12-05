@@ -16,9 +16,11 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 125)->nullable(false);
+            //$table->string('name_en', 125)->nullable(false);
             $table->string('color', 8)->nullable()->default('#6006D5')->comment('color');
             $table->string('style', 50)->nullable()->default('successful')->comment('class名');
             $table->string('description')->nullable();
+            //$table->string('description_en')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

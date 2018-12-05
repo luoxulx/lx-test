@@ -41,4 +41,11 @@ return [
         'redirect' => 'http://your-callback-url',
     ],
 
+    'facebook' => [],
+    'google' => [],
+    'linkedin' => [],
+    'bitbucket' => [],
+    'gitlab' => [],
+    'twitter' => [],
+
 ];

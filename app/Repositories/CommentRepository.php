@@ -11,12 +11,8 @@ namespace App\Repositories;
 
 use App\Models\Comment;
 
-class CommentRepository
+class CommentRepository extends BaseRepository
 {
-
-    use BaseRepository;
-
-    protected $model;
 
     public function __construct(Comment $comment)
     {

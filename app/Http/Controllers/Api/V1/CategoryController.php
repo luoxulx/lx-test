@@ -36,17 +36,18 @@ class CategoryController extends ApiController
     public function index(Request $request)
     {
         $per_page = $request->get('per_page', 10);
-        return $this->response->collection($this->category->page($per_page), new CategoryTransformer());
+        return $this->response->collection($this->category->paginate($per_page), new CategoryTransformer());
     }
 
     public function store(Request $request)
     {
-        return $this->response->withCreated($this->category->store($request->all()), new CategoryTransformer());
+        return $this->response->withCreated($this->category->create($request->all()), new CategoryTransformer());
     }
 
     public function update(Request $request, $id)
     {
-        return $this->response->withPutted($this->category->update($id, $request->all()), new CategoryTransformer());
+        $this->category->update($id, $request->all());
+        return $this->response->withPutted();
     }
 
     public function destroy($id)
