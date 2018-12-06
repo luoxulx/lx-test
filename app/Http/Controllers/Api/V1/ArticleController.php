@@ -42,12 +42,16 @@ class ArticleController extends ApiController
 
     public function store(Request $request)
     {
+        $this->articleValidator($request->all())->validate();
+
         return $this->response->withCreated($this->article->create($request->all()), new ArticleTransformer());
     }
 
     public function update(Request $request, $id)
     {
+        $this->articleValidator($request->all())->validate();
         $this->article->update($id, $request->all());
+
         return $this->response->withPutted();
     }
 

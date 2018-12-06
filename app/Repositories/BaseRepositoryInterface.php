@@ -34,4 +34,6 @@ interface BaseRepositoryInterface
 
     public function setDecrement(int $id, string $column, int $val = 0);
 
+    public function getColumnByIdField(string $field, int $value);
+
 }

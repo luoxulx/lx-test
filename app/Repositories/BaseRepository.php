@@ -84,12 +84,17 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function setDecrement(int $id, string $column, int $val = 0)
     {
-
+        // TODO: Implement setDecrement() method.
     }
 
     public function setIncrement(int $id, string $column, int $val = 0)
     {
         // TODO: Implement setIncrement() method.
+    }
+
+    public function getColumnByIdField(string $field, int $value)
+    {
+        return $this->model->where($field, $value)->first();
     }
 
 }

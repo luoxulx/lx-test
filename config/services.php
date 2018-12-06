@@ -38,14 +38,42 @@ return [
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
         'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
-        'redirect' => 'http://your-callback-url',
+        'redirect' => 'https://www.lnmpa.top/github/auth/callback',
     ],
 
-    'facebook' => [],
-    'google' => [],
-    'linkedin' => [],
-    'bitbucket' => [],
-    'gitlab' => [],
-    'twitter' => [],
+    'facebook' => [
+        'client_id' => 'FACEBOOK_CLIENT_ID',
+        'client_secret' => 'FACEBOOK_CLIENT_SECRET',
+        'redirect' => 'https://www.lnmpa.top/facebook/auth/callback'
+    ],
+
+    'google' => [
+        'client_id' => 'dsad',
+        'client_secret' => 'dasdas',
+        'redirect' => 'dsads'
+    ],
+
+    'linkedin' => [
+        'client_id' => 'dsad',
+        'client_secret' => 'dasdas',
+        'redirect' => 'dsads'
+    ],
+    'bitbucket' => [
+        'client_id' => 'dsad',
+        'client_secret' => 'dasdas',
+        'redirect' => 'dsads'
+    ],
+
+    'gitlab' => [
+        'client_id' => 'dsad',
+        'client_secret' => 'dasdas',
+        'redirect' => 'dsads'
+    ],
+
+    'twitter' => [
+        'client_id' => 'dsad',
+        'client_secret' => 'dasdas',
+        'redirect' => 'dsads'
+    ],
 
 ];

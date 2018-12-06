@@ -14,10 +14,15 @@
 
 Route::post('/login/login', 'Api\\V1\\AuthController@login')->name('api.login.login');
 
-Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:api', 'operation']
+//Route::group(['middleware' => 'jwt.refresh'], function(){
+//    Route::get('/login/refresh', 'Api\\V1\\AuthController@refresh');
+//});
+
+// 后台接口  会JWT鉴权
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], function () { //'middleware'=>['auth:api', 'operation']
 
     Route::post('/login/logout', 'AuthController@logout')->name('api.login.logout');
-    Route::get('/user/user_info', 'UserController@user_info');
+    Route::get('/user/user_info', 'UserController@user_info')->name('api.user.user_info');
     Route::get('/user/transaction/list', 'UserController@transaction_list');
 
     Route::resource('tag', 'TagController', ['names'=>[
@@ -51,20 +56,20 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
         'destroy' => 'api.comment.destroy',
     ], 'except'=>['create', 'edit']]);
 
-
     // extend
     Route::get('/extend/laravel_log', 'LaravelLogController@index')->name('api.extend.laravel_log');
-
-});
-
-//open api
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation']], function () {
 
     // qiniu tool 部分接口
     Route::post('/qiniu_file/upload', 'QniuFileController@store')->name('api.qiniu_file.upload');
     Route::post('/qiniu_file/token', 'QniuFileController@upload_token')->name('api.qiniu_file.upload_token');
     Route::post('/qiniu_file/list', 'QniuFileController@index')->name('api.qiniu_file.index');
     Route::post('/qiniu_file/delete', 'QniuFileController@delete')->name('api.qiniu_file.delete');
+
+});
+
+//open api 只校验 Access-key
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation','open.api']], function () {
+
     Route::post('/mail/send', 'MailController@sendMail');
     Route::get('/mail/show', 'MailController@show');
 

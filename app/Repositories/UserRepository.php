@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 use App\Models\User;
 
 class UserRepository extends BaseRepository
@@ -18,4 +17,21 @@ class UserRepository extends BaseRepository
     {
         $this->model = $user;
     }
+
+    public function getByName($name)
+    {
+        return $this->model->where('name', $name)->first();
+    }
+
+    public function getUserBygithubId($id)
+    {
+        return $this->getColumnByIdField('github_id', $id);
+    }
+
+    public function changePassword($user, $password)
+    {
+        return $user->update(['password' => bcrypt($password)]);
+    }
+
+
 }

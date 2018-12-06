@@ -14,9 +14,15 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+
+//原本的Auth login
 Auth::routes();
-Route::get('login/github', 'Auth\LoginController@redirectToProvider');
-Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
+//Auth
+Route::group(['namespace'=>'Auth'], function (){
+    Route::get('/github/auth/login', 'AuthGithubController@redirectToProvider')->name('github.auth.login');
+    Route::get('/github/auth/callback', 'AuthGithubController@handleProviderCallback')->name('github.auth.callback');
+});
+
 Route::group(['namespace'=>'Front'], function (){
     Route::get('/', 'HomeController@index')->name('home');
 

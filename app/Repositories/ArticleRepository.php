@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Models\Article;
+use App\Scopes\DraftScope;
 
 class ArticleRepository extends BaseRepository
 {
@@ -17,6 +18,11 @@ class ArticleRepository extends BaseRepository
     public function __construct(Article $article)
     {
         $this->model = $article;
+    }
+
+    public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'])
+    {
+        return $this->model->withoutGlobalScope(DraftScope::class)->orderBy($sort[0], $sort[1])->paginate($per_page);
     }
 
     public function create($input)

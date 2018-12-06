@@ -12,6 +12,7 @@ use League\Fractal\Manager;
 use App\Support\Response;
 use App\Support\Transform;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -26,4 +27,20 @@ class ApiController extends Controller
 
         $this->response = new Response(response(), new Transform($manager));
     }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function articleValidator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+    }
+
 }
