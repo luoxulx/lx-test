@@ -43,30 +43,32 @@ class AuthGithubController extends Controller
 
         $user = $this->user->getUserBygithubId($githubUser->id);
 
-        if (auth()->check()) {
-            $currentUser = auth()->user();
+        dd($githubUser);die;
 
-            if ($currentUser->github_id) {
-                return redirect()->back();
-            } else {
-                if ($user) {
-                    return redirect()->back();
-                } else {
-                    $this->bindToGithub($currentUser, $githubUser);
-
-                    return redirect()->back();
-                }
-            }
-        } else {
-            if ($user) {
-                auth()->loginUsingId($user->id);
-                // article
-                return redirect()->to('/');
-            } else {
-                $this->registerByGithubInfo($githubUser);
-                return redirect()->to('auth/github/register');
-            }
-        }
+//        if (auth()->check()) {
+//            $currentUser = auth()->user();
+//
+//            if ($currentUser->github_id) {
+//                return redirect()->back();
+//            } else {
+//                if ($user) {
+//                    return redirect()->back();
+//                } else {
+//                    $this->bindToGithub($currentUser, $githubUser);
+//
+//                    return redirect()->back();
+//                }
+//            }
+//        } else {
+//            if ($user) {
+//                auth()->loginUsingId($user->id);
+//                // article
+//                return redirect()->to('/');
+//            } else {
+//                $this->registerByGithubInfo($githubUser);
+//                return redirect()->to('auth/github/register');
+//            }
+//        }
 
     }
 
