@@ -9,8 +9,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use Laravel\Socialite\Facades\Socialite;
 
-class AuthLinkedinController
+class AuthLinkedinController extends Controller
 {
     protected $user;
 

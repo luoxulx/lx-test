@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Auth;
 
 
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthGoogleController extends Controller
 {
