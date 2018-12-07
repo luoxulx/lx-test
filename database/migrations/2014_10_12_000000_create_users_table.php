@@ -29,6 +29,9 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `users` comment 'users table'");
+
     }
 
     /**

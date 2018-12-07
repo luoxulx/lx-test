@@ -49,17 +49,7 @@ class QiniuTool
         $filename = $this->filenameRandom($ext);
         $key = $path.$filename;
 
-        $result = $this->disk->put($this->token, $key, $binaryData);
-
-        $pic_style = config('my.QNConfig.pic_style');
-        $domain = config('my.QNConfig.domain');
-
-        $temp = [];
-        foreach ($pic_style as $key=>$val) {
-            $temp[$key] = $domain . $result[0]['key'] . $val;
-        }
-
-        return $temp;
+        return $this->disk->put($this->token, $key, $binaryData);
     }
 
     /**

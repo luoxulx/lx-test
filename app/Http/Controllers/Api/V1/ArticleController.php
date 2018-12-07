@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Repositories\ArticleRepository;
 use App\Transformers\ArticleTransformer;
-use Illuminate\Http\Request;
+use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends ApiController
 {
@@ -25,12 +25,12 @@ class ArticleController extends ApiController
     }
 
     /**
+     * @param ArticleRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
      */
-    public function index(Request $request)
+    public function index()
     {
-        $per_page = intval($request->get('per_page', 10));
+        $per_page = intval(request()->get('per_page', 10));
 
         return $this->response->collection($this->article->paginate($per_page), new ArticleTransformer());
     }
@@ -40,16 +40,13 @@ class ArticleController extends ApiController
         return $this->response->item($this->article->getById($id), new ArticleTransformer());
     }
 
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        $this->articleValidator($request->all())->validate();
-
         return $this->response->withCreated($this->article->create($request->all()), new ArticleTransformer());
     }
 
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, $id)
     {
-        $this->articleValidator($request->all())->validate();
         $this->article->update($id, $request->all());
 
         return $this->response->withPutted();

@@ -20,9 +20,16 @@ class ArticleRepository extends BaseRepository
         $this->model = $article;
     }
 
+    // 仅供 后台 api 使用，含草稿
     public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'])
     {
         return $this->model->withoutGlobalScope(DraftScope::class)->orderBy($sort[0], $sort[1])->paginate($per_page);
+    }
+
+    // blade 页面使用，不含草稿
+    public function page(int $per_page = 10, array $sort = ['created_at', 'desc'])
+    {
+        return $this->model->orderBy($sort[0], $sort[1])->paginate($per_page);
     }
 
     public function create($input)
@@ -31,25 +38,12 @@ class ArticleRepository extends BaseRepository
 
         $this->model->save();
 
-        if (is_array($input['tags']) && current($input['tags'])) {
-            $this->syncTag($article, $input['tags']);
+        if (! isset($input['tags'])) {
+            $input['tags'] = [1];
         }
-        else{
-            $this->syncTag($article, json_decode($input['tags'], true));
-        }
+        $this->syncTag($article, $input['tags']);
 
         return $article;
-    }
-
-    /**
-     * Sync the tags for the article
-     * @param Article $article
-     * @param array $tags
-     * @return mixed
-     */
-    public function syncTag(Article $article, array $tags)
-    {
-        return $article->tags()->sync($tags);
     }
 
     /**
@@ -61,15 +55,24 @@ class ArticleRepository extends BaseRepository
      */
     public function update(int $id, $data)
     {
-        $article = $this->model->findOrFail($id);
+        $article = $this->model->withoutGlobalScope(DraftScope::class)->findOrFail($id);
 
-        if (is_array($data['tags']) && current($data['tags'])) {
+        if (isset($data['tags'])) {
             $this->syncTag($article, $data['tags']);
-        } else {
-            $this->syncTag($article, json_decode($data['tags'], true));
         }
 
         return $article->update($data);
+    }
+
+    /**
+     * Sync the tags for the article
+     * @param Article $article
+     * @param array $tags
+     * @return mixed
+     */
+    public function syncTag(Article $article, array $tags)
+    {
+        return $article->tags()->sync($tags);
     }
 
     public function getBySlug($slug)

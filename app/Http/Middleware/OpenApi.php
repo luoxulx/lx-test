@@ -16,8 +16,8 @@ class OpenApi
     public function handle(Request $request, \Closure $next)
     {
 
-        if (! $request->header('Access-key')) {
-            return response()->json(['message' => 'Illegal Request！Access-key Error！'], 401);
+        if (! $request->header('Access-Key')) {
+            return response()->json(['message' => 'Illegal Request！Access-Key Error！'], 401);
         }
         return $next($request);
     }

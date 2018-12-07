@@ -27,7 +27,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $articles = $this->article->paginate(10);
+        $articles = $this->article->page(10);
 
         return view('home.index', compact('articles'));
     }

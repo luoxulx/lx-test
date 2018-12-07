@@ -18,6 +18,10 @@ class CreateTaggablesTable extends Migration
             $table->integer('taggable_id')->unsigned()->nullable(false);
             $table->char('taggable_type', 32)->nullable(false);
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `taggables` comment 'taggables'");
+        // \Illuminate\Support\Facades\DB::statement("INSERT INTO `taggables` (`tag_id`, `taggable_id`, `taggable_type`) VALUES ('1', '1', 'App\Models\Article')");
+        // \Illuminate\Support\Facades\DB::statement("INSERT INTO `taggables` (`tag_id`, `taggable_id`, `taggable_type`) VALUES ('1', '2', 'App\Models\Article')");
     }
 
     /**

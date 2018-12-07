@@ -10,11 +10,11 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Tag::class, function (Faker $faker) {
     return [
-        'name' => '测试tag-'.$faker->streetName,
+        'name' => '默认标签',
         //'name_en' => 'name_en-'.$faker->streetName,
         'color' => '#6D1515',
         'style' => 'info',
-        'description' => '测试desc',
+        'description' => '默认标签-description',
         //'description_en' => '测试desc-en',
     ];
 });
