@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,11 +47,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-//        return response()->json([
-//            'message' => $exception->getMessage(),
-//            'code' => $exception->getCode(),
-//            'debug' => ['file' => $exception->getFile(),'line' => $exception->getLine(),'trace' => $exception->getTrace()]
-//        ], 200);
+        // 为了兼容 api 返回 json
+        if($request->is('api/*')) {
+            if($exception instanceof ValidationException){
+                return response()->json(['message'=>array_values($exception->errors())[0][0]], 422);
+            }
+//            else{
+//                $message = $exception->getMessage() ?? 'Illegal request！';
+//                return response()->json(['message'=>$message], 422);
+//            }
+        }
+
         return parent::render($request, $exception);
     }
 }

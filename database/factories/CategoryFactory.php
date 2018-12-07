@@ -11,7 +11,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Category::class, function (Faker $faker) {
     return [
         'parent_id' => 0,
-        'name' => '默认测试分类一',
+        'name' => '默认分类',
         //'name_en' => '默认测试分类一--en',
         'description' => '描述-'.$faker->streetAddress,
         //'description_en' => '描述en-'.$faker->streetAddress,

@@ -18,6 +18,8 @@ class CreatePasswordResetsTable extends Migration
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `password_resets` comment 'password_resets table'");
     }
 
     /**

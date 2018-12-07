@@ -8,14 +8,10 @@
 
 namespace App\Models;
 
-
 use App\Scopes\DraftScope;
-use Cviebrock\EloquentSluggable\Sluggable;
 
 class Article extends Models
 {
-
-    use Sluggable;
 
     protected $fillable = [
         'category_id',
@@ -44,15 +40,6 @@ class Article extends Models
         parent::boot();
 
         static::addGlobalScope(new DraftScope());
-    }
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
     }
 
     public function user()
@@ -94,5 +81,39 @@ class Article extends Models
         ];
         $this->attributes['content'] = json_encode($data);
     }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+
+        $pinyin = '';
+
+        if (!config('my.bd_translate.app_id') || !config('my.bd_translate.secret_key')) {
+
+            if (preg_match('/[a-zA-Z]/',$value)){
+                $pinyin = strval($value);
+            }else {
+                $pinyin = zh_to_pinyin($value);
+            }
+
+            $this->setUniqueSlug($pinyin, '');
+        } else {
+            $pinyin = bd_translate($value);
+            $this->setUniqueSlug($pinyin, '');
+        }
+    }
+
+    protected function setUniqueSlug($value, $extra)
+    {
+        $slug = str_slug($value.'-'.$extra);
+
+        if (static::whereSlug($slug)->exists()) {
+            $this->setUniqueSlug($slug, (int) $extra + 1);
+            return;
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
 
 }

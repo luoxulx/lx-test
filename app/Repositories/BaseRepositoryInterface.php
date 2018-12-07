@@ -30,9 +30,9 @@ interface BaseRepositoryInterface
 
     public function getCount();
 
-    public function setIncrement(int $id, string $column, int $val = 0);
+    public function setIncrement(string $column, int $val = 1);
 
-    public function setDecrement(int $id, string $column, int $val = 0);
+    public function setDecrement(string $column, int $val = 1);
 
     public function getColumnByIdField(string $field, int $value);
 

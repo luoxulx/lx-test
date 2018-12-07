@@ -82,16 +82,22 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->count();
     }
 
-    public function setDecrement(int $id, string $column, int $val = 0)
+    public function setDecrement(string $column, int $val = 1)
     {
-        // TODO: Implement setDecrement() method.
+        return $this->model->decrement($column, $val);
     }
 
-    public function setIncrement(int $id, string $column, int $val = 0)
+    public function setIncrement(string $column, int $val = 1)
     {
         // TODO: Implement setIncrement() method.
+        return $this->model->increment($column, $val);
     }
 
+    /**
+     * @param string $field  eg: facebook_id
+     * @param int $value     eg: facebook_id value
+     * @return mixed
+     */
     public function getColumnByIdField(string $field, int $value)
     {
         return $this->model->where($field, $value)->first();
