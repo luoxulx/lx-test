@@ -28,6 +28,6 @@ class AuthTwitterController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
+        return Socialite::driver('twitter')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
     }
 }
