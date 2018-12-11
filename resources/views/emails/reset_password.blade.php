@@ -3,7 +3,7 @@
 
 {{ $content }}
 
-@component('mail::button', ['url' => 'https://www.baidu.com', 'color'=>'success'])
+@component('mail::button', ['url' => ''])
 Button Text
 @endcomponent
 

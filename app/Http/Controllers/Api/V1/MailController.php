@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Mail\NewComment;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends ApiController
@@ -24,12 +24,12 @@ class MailController extends ApiController
 
     public function sendMail()
     {
-        Mail::to('luoxulx@aliyun.com')->send(new NewComment());
-        return $this->response->withNoContent();
+        $res = Mail::to('luoxulx@aliyun.com')->send(new ResetPassword(['title'=>'The Title', 'content'=>'the content']));var_dump($res);
+        // return $this->response->withNoContent();
     }
 
     public function show()
     {
-        return (new NewComment())->render();
+        return (new ResetPassword(['title'=>'The Title', 'content'=>'the content']))->render();
     }
 }

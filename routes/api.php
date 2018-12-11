@@ -65,10 +65,12 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     Route::post('/qiniu_file/list', 'QniuFileController@index')->name('api.qiniu_file.index');
     Route::post('/qiniu_file/delete', 'QniuFileController@delete')->name('api.qiniu_file.delete');
 
+    //上传至磁盘 部分接口
+
 });
 
 //open api 只校验 Access-Key
-Route::group(['namespace'=>'Api\\V1', 'middleware'=>['operation','open.api']], function () {
+Route::group(['namespace'=>'Api\\V1', ], function () {//'middleware'=>['operation','open.api']
 
     Route::post('/mail/send', 'MailController@sendMail');
     Route::get('/mail/show', 'MailController@show');
