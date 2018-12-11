@@ -73,7 +73,7 @@ class Article extends Models
      *
      * @param $value
      */
-    public function setContentAttribute($value)
+    protected function setContentAttribute($value)
     {
         $data = [
             'raw'  => strip_tags($value),
@@ -82,10 +82,8 @@ class Article extends Models
         $this->attributes['content'] = json_encode($data);
     }
 
-    public function setTitleAttribute($value)
+    protected function setTitleAttribute($value)
     {
-        $this->attributes['title'] = $value;
-
         $pinyin = '';
 
         if (!config('my.bd_translate.app_id') || !config('my.bd_translate.secret_key')) {
@@ -101,6 +99,8 @@ class Article extends Models
             $pinyin = bd_translate($value);
             $this->setUniqueSlug($pinyin, '');
         }
+
+        $this->attributes['title'] = $value;
     }
 
     protected function setUniqueSlug($value, $extra)
