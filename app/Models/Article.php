@@ -13,6 +13,8 @@ use App\Scopes\DraftScope;
 class Article extends Models
 {
 
+    protected $table = 'articles';
+
     protected $fillable = [
         'category_id',
         'user_id',
@@ -96,7 +98,12 @@ class Article extends Models
 
             $this->setUniqueSlug($pinyin, '');
         } else {
-            $pinyin = bd_translate($value);
+            if (preg_match('/[a-zA-Z]/',$value)){
+                $pinyin = strval($value).str_random();
+            }else {
+                $pinyin = bd_translate($value);
+            }
+
             $this->setUniqueSlug($pinyin, '');
         }
 

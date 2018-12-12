@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar',200)->nullable()->comment('用户头像链接');
 
             $table->tinyInteger('is_admin')->unsigned()->default(0);
-            $table->mediumInteger('github_id')->default(0)->comment('github ID');
+            // $table->mediumInteger('github_id')->default(0)->comment('github ID');
             $table->rememberToken();
             $table->timestamp('email_verified_at');
             $table->timestamps();

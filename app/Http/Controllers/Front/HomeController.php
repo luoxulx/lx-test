@@ -27,6 +27,7 @@ class HomeController extends Controller
 
     public function index()
     {
+        //var_dump(auth()->user());die;
         $articles = $this->article->page(10);
 
         return view('home.index', compact('articles'));

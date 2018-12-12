@@ -30,4 +30,9 @@ class AuthTwitterController extends Controller
     {
         return Socialite::driver('twitter')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
     }
+
+    public function privacyPolicyView()
+    {
+        return view('auth.privacy.twitter');
+    }
 }

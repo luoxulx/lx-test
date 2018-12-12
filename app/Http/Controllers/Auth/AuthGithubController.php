@@ -29,7 +29,7 @@ class AuthGithubController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
+        return Socialite::driver('github')->with(['Frankenstein'=>'dr_14k@yeah.net'])->redirect();
     }
 
     /**
@@ -41,44 +41,45 @@ class AuthGithubController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        $user = $this->user->getUserBygithubId($githubUser->id);
+        return response()->json(['aaa'=>$githubUser]);
 
-        dd($githubUser);die;
+        $user = $this->user->getUserBygithubId($github_user_info['github_id']);
 
-//        if (auth()->check()) {
-//            $currentUser = auth()->user();
-//
-//            if ($currentUser->github_id) {
-//                return redirect()->back();
-//            } else {
-//                if ($user) {
-//                    return redirect()->back();
-//                } else {
-//                    $this->bindToGithub($currentUser, $githubUser);
-//
-//                    return redirect()->back();
-//                }
-//            }
-//        } else {
-//            if ($user) {
-//                auth()->loginUsingId($user->id);
-//                // article
-//                return redirect()->to('/');
-//            } else {
-//                $this->registerByGithubInfo($githubUser);
-//                return redirect()->to('auth/github/register');
-//            }
-//        }
+        if (auth()->check()) {
+            $currentUser = auth()->user();
 
+            if ($currentUser->github_id === 0) {
+                if ($user) {
+                    return redirect()->back();
+                }
+                $this->bindToGithub($currentUser, $github_user_info);
+            }
+
+            return redirect()->back();
+        }else {
+            if ($user) {
+                auth()->loginUsingId($user->id);
+                return redirect()->to('/');
+            }
+            $this->registerByGithubInfo($github_user_info);
+        }
     }
 
-    protected function bindToGithub()
+    protected function bindToGithub($currentUser, array $github_user_info)
     {
+        $currentUser->github_id = $github_user_info['github_id'];
+        $currentUser->save();
 
+        return redirect()->back();
     }
 
-    protected function registerByGithubInfo()
+    protected function registerByGithubInfo(array $github_user_info)
     {
+        return redirect()->to('/');
+    }
 
+    public function privacyPolicyView()
+    {
+        return view('auth.privacy.github');
     }
 }

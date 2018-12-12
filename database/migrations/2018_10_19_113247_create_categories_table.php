@@ -25,6 +25,8 @@ class CreateCategoriesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `categories` comment 'categories table分类'");
     }
 
     /**

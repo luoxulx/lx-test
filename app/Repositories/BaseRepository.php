@@ -89,7 +89,6 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function setIncrement(string $column, int $val = 1)
     {
-        // TODO: Implement setIncrement() method.
         return $this->model->increment($column, $val);
     }
 

@@ -42,21 +42,27 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => 'FACEBOOK_CLIENT_ID',
-        'client_secret' => 'FACEBOOK_CLIENT_SECRET',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => 'https://www.lnmpa.top/facebook/auth/callback'
     ],
 
     'google' => [
-        'client_id' => 'dsad',
-        'client_secret' => 'dasdas',
-        'redirect' => 'dsads'
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => 'https://www.lnmpa.top/google/auth/callback'
+    ],
+
+    'twitter' => [
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => 'https://www.lnmpa.top/twitter/auth/callback'
     ],
 
     'linkedin' => [
-        'client_id' => 'dsad',
-        'client_secret' => 'dasdas',
-        'redirect' => 'dsads'
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'redirect' => 'https://www.lnmpa.top/linkedin/auth/callback'
     ],
     'bitbucket' => [
         'client_id' => 'dsad',
@@ -65,12 +71,6 @@ return [
     ],
 
     'gitlab' => [
-        'client_id' => 'dsad',
-        'client_secret' => 'dasdas',
-        'redirect' => 'dsads'
-    ],
-
-    'twitter' => [
         'client_id' => 'dsad',
         'client_secret' => 'dasdas',
         'redirect' => 'dsads'

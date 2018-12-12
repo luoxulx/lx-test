@@ -12,6 +12,8 @@ namespace App\Models;
 class Category extends Models
 {
 
+    protected $table = 'categories';
+
     protected $fillable = [
         'parent_id',
         'name',

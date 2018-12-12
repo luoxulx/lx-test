@@ -15,12 +15,21 @@
 //    return view('welcome');
 //});
 
-//原本的Auth login
+// 原本的Auth login
 Auth::routes();
-//Auth
+// Socialite Auth
 Route::group(['namespace'=>'Auth'], function (){
     Route::get('/github/auth/login', 'AuthGithubController@redirectToProvider')->name('github.auth.login');
     Route::get('/github/auth/callback', 'AuthGithubController@handleProviderCallback')->name('github.auth.callback');
+    Route::get('/github/privacy_policy', 'AuthGithubController@privacyPolicyView')->name('github.privacy_policy');
+
+    Route::get('/facebook/auth/login', 'AuthFacebookController@redirectToProvider')->name('facebook.auth.login');
+    Route::get('/facebook/auth/callback', 'AuthFacebookController@handleProviderCallback')->name('facebook.auth.callback');
+    Route::get('/facebook/privacy_policy', 'AuthFacebookController@privacyPolicyView')->name('facebook.privacy_policy');
+
+    Route::get('/google/auth/login', 'AuthGoogleController@redirectToProvider')->name('google.auth.login');
+    Route::get('/google/auth/callback', 'AuthGoogleController@handleProviderCallback')->name('google.auth.callback');
+    Route::get('/google/privacy_policy', 'AuthGoogleController@privacyPolicyView')->name('google.privacy_policy');
 });
 
 Route::group(['namespace'=>'Front'], function (){

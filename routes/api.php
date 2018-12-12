@@ -25,6 +25,14 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     Route::get('/user/user_info', 'UserController@user_info')->name('api.user.user_info');
     Route::get('/user/transaction/list', 'UserController@transaction_list');
 
+    Route::resource('user', 'UserController', ['names'=>[
+        'index' => 'api.user.index',
+        'show' => 'api.user.show',
+        'store' => 'api.user.store',
+        'update' => 'api.user.update',
+        'destroy' => 'api.user.destroy',
+    ], 'except'=>['create', 'edit']]);
+
     Route::resource('tag', 'TagController', ['names'=>[
         'index' => 'api.tag.index',
         'show' => 'api.tag.show',

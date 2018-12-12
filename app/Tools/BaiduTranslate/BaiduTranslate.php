@@ -42,6 +42,10 @@ class BaiduTranslate
         $ret = $this->call($this->translateUrl, $args);
         $result = json_decode($ret, true);
 
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return false;
+        }
+
         if (isset($result['error_code'])) {
             // return ['message' => $result['error_msg']];
             return false;

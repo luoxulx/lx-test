@@ -22,6 +22,8 @@ class CreateEnArticlesTable extends Migration
             $table->index('article_id');
             $table->foreign('article_id')->references('id')->on('articles'); // ->onDelete('cascade')->onUpdate('cascade')
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `en_articles` comment 'en_articles table暂时弃用'");
     }
 
     /**

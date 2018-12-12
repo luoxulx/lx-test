@@ -31,6 +31,8 @@ class CreateArticlesTable extends Migration
 
             $table->index('slug');
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `articles` comment 'articles table'");
     }
 
     /**

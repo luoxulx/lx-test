@@ -140,12 +140,12 @@ if (!function_exists('bd_translate')) {
      * @param string $to
      * @return bool
      */
-    function bd_translate(string $string, string $from = 'zh', string $to = 'en')
+    function bd_translate(string $string, string $from = 'auto', string $to = 'en')
     {
         function buildSign($query, $appID, $salt, $secKey)
-        {/*{{{*/
+        {
             return md5($appID . $query . $salt . $secKey);
-        }/*}}}*/
+        }
 
         function call($url, $args=null, $method='post', $timeout = 10, $headers=array())
         {/*{{{*/
@@ -166,7 +166,7 @@ if (!function_exists('bd_translate')) {
         }/*}}}*/
 
         function callOnce($url, $args=null, $method='post', $withCookie = false, $timeout = 10, $headers=array())
-        {/*{{{*/
+        {
             $ch = curl_init();
             if($method == 'post')
             {
@@ -203,10 +203,10 @@ if (!function_exists('bd_translate')) {
             $r = curl_exec($ch);
             curl_close($ch);
             return $r;
-        }/*}}}*/
+        }
 
         function convert(&$args)
-        {/*{{{*/
+        {
             $data = '';
             if (is_array($args))
             {
@@ -227,14 +227,14 @@ if (!function_exists('bd_translate')) {
                 return trim($data, "&");
             }
             return $args;
-        }/*}}}*/
+        }
 
         $app_id = config('my.bd_translate.app_id');
         $secret_key = config('my.bd_translate.secret_key');
         $url = config('my.bd_translate.url');
 
         if (! $app_id || ! $secret_key || ! $url) {
-            return false;
+            return $string.'----error----';
         }
 
         $args = array(
@@ -251,6 +251,9 @@ if (!function_exists('bd_translate')) {
         $result = call($url, $args);
 
         $result = json_decode($result, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return false;
+        }
 
         if (isset($result['error_code'])) {
             // return ['message' => $result['error_msg']];

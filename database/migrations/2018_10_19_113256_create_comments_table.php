@@ -24,6 +24,8 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `comments` comment 'comments table评论'");
     }
 
     /**

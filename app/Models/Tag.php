@@ -12,6 +12,8 @@ namespace App\Models;
 class Tag extends Models
 {
 
+    protected $table = 'tags';
+
     protected $fillable = [
         'name',
         'color',

@@ -30,4 +30,9 @@ class AuthLinkedinController extends Controller
     {
         return Socialite::driver('linkedin')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
     }
+
+    public function privacyPolicyView()
+    {
+        return view('auth.privacy.linkedin');
+    }
 }

@@ -10,6 +10,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +29,12 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function githubInfo()
+    {
+        return $this->hasOne(UserGithub::class, 'user_id', 'id');
+    }
 
 
     /**

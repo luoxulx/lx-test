@@ -25,6 +25,8 @@ class CreateOperationLogsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `operation_logs` comment 'operation_logs table接口请求记录'");
     }
 
     /**

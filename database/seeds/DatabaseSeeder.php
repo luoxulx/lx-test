@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         factory(App\Models\Tag::class, 1)->create();
         factory(App\Models\Category::class, 1)->create();
         factory(App\Models\Article::class, 2)->create();
+        factory(App\Models\UserGithub::class, 1)->create();
     }
 }

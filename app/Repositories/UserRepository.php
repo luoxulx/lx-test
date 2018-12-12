@@ -23,15 +23,9 @@ class UserRepository extends BaseRepository
         return $this->model->where('name', $name)->first();
     }
 
-    public function getUserBygithubId($id)
-    {
-        return $this->getColumnByIdField('github_id', $id);
-    }
-
     public function changePassword($user, $password)
     {
         return $user->update(['password' => bcrypt($password)]);
     }
-
 
 }

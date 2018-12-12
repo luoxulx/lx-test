@@ -8,12 +8,12 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class EnArticle extends Model
 {
 
+    protected $table = 'en_articles';
 //    public function zhInfo()
 //    {
 //        return $this->belongsTo(Article::class);

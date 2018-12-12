@@ -23,12 +23,28 @@ class AuthGoogleController extends Controller
     }
 
     /**
-     * Redirect the user to the GitHub authentication page.
+     * Redirect the user to the Google authentication page.
      *
      * @return \Illuminate\Http\Response
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('google')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
+        return Socialite::driver('google')->with(['Frankenstein'=>'dr_14k@yeah.net'])->redirect();
+    }
+
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+        return response()->json($googleUser);
+    }
+
+    public function privacyPolicyView()
+    {
+        return view('auth.privacy.google');
     }
 }

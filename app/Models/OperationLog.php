@@ -12,6 +12,8 @@ namespace App\Models;
 class OperationLog extends Models
 {
 
+    protected $table = 'operation_logs';
+
     protected $fillable = [
         'user_id',
         'path',

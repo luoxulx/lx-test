@@ -25,6 +25,8 @@ class CreateTagsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `tags` comment 'tags table标签'");
     }
 
     /**

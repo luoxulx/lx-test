@@ -17,6 +17,8 @@ class UserTransformer extends TransformerAbstract
 
     public function transform(User $user)
     {
-        return $user->attributesToArray();
+        $res = $user->attributesToArray();
+        $res['github_info'] = $user->githubInfo()->get();
+        return $res;
     }
 }
