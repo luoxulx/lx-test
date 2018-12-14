@@ -67,13 +67,13 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     // extend
     Route::get('/extend/laravel_log', 'LaravelLogController@index')->name('api.extend.laravel_log');
 
-    // qiniu tool 部分接口
-    Route::post('/qiniu_file/upload', 'QniuFileController@store')->name('api.qiniu_file.upload');
-    Route::post('/qiniu_file/token', 'QniuFileController@upload_token')->name('api.qiniu_file.upload_token');
-    Route::post('/qiniu_file/list', 'QniuFileController@index')->name('api.qiniu_file.index');
-    Route::post('/qiniu_file/delete', 'QniuFileController@delete')->name('api.qiniu_file.delete');
+    // file ---------- qiniu---------- manage
+    Route::post('/upload/qiniu_upload', 'FileController@qiniuUpload')->name('api.upload.qiniu_upload');
+    Route::post('/upload/qiniu_token', 'FileController@qiniuToken')->name('api.upload.qiniu_token');
+    Route::post('/upload/qiniu_list', 'FileController@qiniuList')->name('api.upload.qiniu_list');
+    Route::post('/upload/qiniu_del', 'FileController@qiniuDelOne')->name('api.upload.qiniu_del');
 
-    //上传至磁盘 部分接口
+    // file ---------- qiniu---------- manage
 
 });
 

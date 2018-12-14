@@ -18,23 +18,27 @@ class LogOperation
 
     public function handle(Request $request, \Closure $next)
     {
-        $response = $next($request);
-
         // if ($this->shouldLogOperation($request)) { 暂时不验证请求,
-            $log = array(
-                // 'user_id' => Admin::user()->id,
-                'user_id' => 1,
-                'path'    => substr($request->path(), 0, 255),
-                'method'  => $request->method(),
-                'ip'      => $request->getClientIp(),
-                'request'   => json_encode(['header'=>$request->headers->all(), 'body'=>$request->input()]),
-                'jwt_auth' => $request->hasHeader('Authorization') ? 1 : 0
-            );
 
-            OperationLog::create($log);
         // }
 
-        return $response;
+        $log = array(
+            // 'user_id' => Admin::user()->id,
+            'user_id' => 1,
+            'path'    => substr($request->path(), 0, 255),
+            'method'  => $request->method(),
+            'ip'      => $request->getClientIp(),
+            'request'   => json_encode(['header'=>$request->headers->all(), 'body'=>$request->input()]),
+            'jwt_auth' => $request->hasHeader('Authorization') ? 1 : 0
+        );
+
+        try {
+            OperationLog::create($log);
+        } catch (\Exception $exception) {
+            // pass
+        }
+
+        return $next($request);
     }
 
     /**

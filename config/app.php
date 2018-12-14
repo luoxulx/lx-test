@@ -153,7 +153,6 @@ return [
         // lx-new
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,7 +213,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         // lx-new
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

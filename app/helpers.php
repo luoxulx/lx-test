@@ -45,6 +45,17 @@ if (!function_exists('v4UUID')) {
     }
 }
 
+if (function_exists('filenameRandom')) {
+    function filenameRandom($ext = ''): string
+    {
+        $key = hash('ripemd160', uniqid('laravel_', true).time());
+        if (trim($ext)) {
+            $key .= $ext;
+        }
+        return $key;
+    }
+}
+
 
 if (! function_exists('buildPicUrl')) {
     /**

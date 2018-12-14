@@ -46,7 +46,7 @@ class QiniuTool
      */
     public function put($path, $binaryData, $ext): array
     {
-        $filename = $this->filenameRandom($ext);
+        $filename = filenameRandom($ext);
         $key = $path.$filename;
 
         return $this->disk->put($this->token, $key, $binaryData);
@@ -62,7 +62,7 @@ class QiniuTool
     public function putFile($path, $binaryData, $ext): array
     {
         $filename = $this->filenameRandom($ext);
-        $key = $path.$filename;
+        $key = trim($path).$filename;
 
         $result = $this->disk->putFile($this->token, $key, $binaryData);
 
