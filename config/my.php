@@ -21,7 +21,7 @@ return array(
         ],
     ],
 
-    'QNConfig' => [
+    'qiniu_config' => [
         'ak' => env('QI_NIU_AK'),
         'sk' => env('QI_NIU_SK'),
         'bucket' => env('QI_NIU_BUCKET'),

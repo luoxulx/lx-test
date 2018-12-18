@@ -2,44 +2,44 @@
 /**
  * Created by PhpStorm.
  * User: luoxulx
- * Date: 2018/12/15
- * Time: 下午22:16
+ * Date: 2018/12/16
+ * Time: 下午7:43
  */
 
 namespace App\Http\Controllers\Api\V1;
 
 
 use Illuminate\Http\Request;
-use App\Tools\Qiniu\QiniuTool;
-use App\Tools\FileManage\BaseFileManage;
 
 class FileController extends ApiController
 {
 
-    protected $qiniuDisk;
-    protected $localDisk;
+    protected $manager;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->qiniuDisk = new QiniuTool();
-        $this->localDisk = new BaseFileManage();
+        $this->manager = app('file_manage');
     }
 
-    #local --------- start
-
-    public function localIndex(Request $request)
+    public function fileIndex(Request $request)
     {
-        $data = $this->localDisk->folderInfo($request->get('prefix'));
+        $data = $this->manager->folderInfo($request->get('folder'));
 
         return $this->response->json([ 'data' => $data ]);
-
     }
 
-    public function localUpload(Request $request)
+    /**
+     * Generic file upload method.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fileUpload(Request $request)
     {
-        $prefix = $request->get('prefix', 'test_file/'); //必须带 /
+        $strategy = $request->get('prefix', 'test/');
 
         if (!$request->hasFile('file')) {
             return $this->response->json([
@@ -48,27 +48,11 @@ class FileController extends ApiController
             ]);
         }
 
-        $path = $prefix . date('Y') . '/' . date('m');
+        $path = $strategy . '/' . date('Y') . '/' . date('m');
 
-        $result = $this->localDisk->store($request->file('file'), $path);
+        $result = $this->manager->store($request->file('file'), $path);
 
         return $this->response->json($result);
-    }
-
-    /**
-     * Create the folder.
-     *
-     * @param  Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function localCreateFolder(Request $request)
-    {
-        $folder = $request->get('folder');
-
-        $data = $this->localDisk->createFolder($folder);
-
-        return $this->response->json([ 'data' => $data ]);
     }
 
     /**
@@ -78,16 +62,30 @@ class FileController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function localDelFile(Request $request)
+    public function deleteFile(Request $request)
     {
-        $path = $request->get('path');
+        $path = $request->get('prefix');
 
-        $data = $this->localDisk->deleteFile($path);
+        $data = $this->manager->deleteFile($path);
 
         return $this->response->json([ 'data' => $data ]);
     }
 
+    /**
+     * Create the folder.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createFolder(Request $request)
+    {
+        $folder = $request->get('folder');
 
+        $data = $this->manager->createFolder($folder);
+
+        return $this->response->json([ 'data' => $data ]);
+    }
 
     /**
      * Delete the folder.
@@ -96,13 +94,13 @@ class FileController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function localDelFolder(Request $request)
+    public function deleteFolder(Request $request)
     {
         $del_folder = $request->get('del_folder');
 
         $folder = $request->get('folder') . '/' . $del_folder;
 
-        $data = $this->localDisk->deleteFolder($folder);
+        $data = $this->manager->deleteFolder($folder);
 
         if(!$data) {
             return $this->response->withForbidden('The directory must be empty to delete it.');
@@ -112,7 +110,6 @@ class FileController extends ApiController
     }
 
 
-
     /**
      * Upload the file for file manager.
      *
@@ -120,7 +117,7 @@ class FileController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function localUploadForManager(Request $request)
+    public function uploadForManager(Request $request)
     {
         $file = $request->file('file');
 
@@ -130,69 +127,12 @@ class FileController extends ApiController
 
         $path = str_finish($request->get('folder'), '/');
 
-        if ($this->localDisk->checkFile($path.$fileName)) {
+        if ($this->manager->checkFile($path.$fileName)) {
             return $this->response->withBadRequest('This File exists.');
         }
 
-        $result = $this->localDisk->store($file, $path, $fileName);
+        $result = $this->manager->store($file, $path, $fileName);
 
         return $this->response->json($result);
-
     }
-    # local --------- end
-
-    # qiniu --------- start
-
-    public function qiniuToken()
-    {
-        return $this->response->json([
-            'qiniu_token' => $this->qiniuDisk->uploadToken(),
-            'qiniu_key' => md5(uniqid('14k.Frankenstein', true).time())
-        ]);
-    }
-
-    public function qiniuUpload(Request $request)
-    {
-        $path = $request->post('path','test_file/'); // 目录带 /
-        $image = $request->file('file');
-        if (! $request->file('file')) {
-            return $this->response->withBadRequest('Bad Request with null file');
-        }
-        $ext = $image->getClientOriginalExtension();
-
-        $response = $this->qiniuDisk->putFile($path, $image, $ext);
-
-        return $this->response->json($response);
-    }
-
-    public function qiniuList(Request $request)
-    {
-        $path = $request->post('prefix') ?? ''; // 目录带 /
-        $limit = $request->post('limit', 500);
-        $list = $this->qiniuDisk->files($path, $limit);
-
-        return $this->response->json(['data'=>$list, 'total'=>\count($list)]);
-    }
-
-    public function qiniuDelOne(Request $request)
-    {
-        $filename = $request->post('filename');
-
-        if (!$filename) {
-            return $this->response->withBadRequest('Bad Request with null filename');
-        }
-
-        $res = $this->qiniuDisk->deleteOriginFile($filename);
-
-        if ($res === null) {
-            return $this->response->withNoContent();
-        }
-        return $this->response->withBadRequest('Bad Request with no such file or directory');
-    }
-
-    public function qiniuDir()
-    {
-        return $this->response->json(['data'=>$this->qiniuDisk->allDir()]);
-    }
-    # qiniu --------- end
 }

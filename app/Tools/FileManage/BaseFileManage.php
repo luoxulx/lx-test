@@ -9,7 +9,7 @@
 namespace App\Tools\FileManage;
 
 use Carbon\Carbon;
-use \Exception as UploadException;
+use \Exception as FileException;
 use Illuminate\Support\Facades\Storage;
 use Dflydev\ApacheMimeTypes\PhpRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -46,9 +46,9 @@ class BaseFileManage
         $folder = $this->cleanFolder($folder);
 
         $breadcrumbs = $this->breadcrumbs($folder);
-        $slice = array_slice($breadcrumbs, -1);
+        $slice = \array_slice($breadcrumbs, -1);
         $folderName = current($slice);
-        $breadcrumbs = array_slice($breadcrumbs, 0, -1);
+        $breadcrumbs = \array_slice($breadcrumbs, 0, -1);
 
         $subfolders = $this->getSubfolderList($folder);
 
@@ -206,14 +206,14 @@ class BaseFileManage
      *
      * @param $folder
      * @return string
-     * @throws UploadException
+     * @throws FileException
      */
     public function createFolder($folder)
     {
         $this->cleanFolder($folder);
 
         if ($this->checkFolder($folder)) {
-            throw new UploadException('The Folder exists.');
+            throw new FileException('The Folder exists.');
         }
 
         return $this->disk->makeDirectory($folder);

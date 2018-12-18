@@ -67,16 +67,9 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     // extend
     Route::get('/extend/laravel_log', 'LaravelLogController@index')->name('api.extend.laravel_log');
 
-    // file ---------- qiniu---------- manage
-    Route::post('/upload/qiniu_upload', 'FileController@qiniuUpload')->name('api.upload.qiniu_upload');
-    Route::post('/upload/qiniu_token', 'FileController@qiniuToken')->name('api.upload.qiniu_token');
-    Route::post('/upload/qiniu_list', 'FileController@qiniuList')->name('api.upload.qiniu_list');
-    Route::post('/upload/qiniu_del', 'FileController@qiniuDelOne')->name('api.upload.qiniu_del');
-
-    // file ---------- local---------- manage
-    Route::post('/upload/local_upload', 'FileController@localUpload')->name('api.upload.local_upload');
-    Route::post('/upload/local_index', 'FileController@localIndex')->name('api.upload.local_index');
-    Route::post('/upload/local_delete', 'FileController@localDelFile')->name('api.upload.local_delete');
+    // file -------------------- manage
+    Route::post('/file/upload', 'FileController@fileUpload')->name('api.file.upload');
+    Route::post('/file/file_index', 'FileController@fileIndex')->name('api.file.file_index');
 
 });
 
