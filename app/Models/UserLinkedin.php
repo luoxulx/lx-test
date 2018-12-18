@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserLinkedin extends Model
 {
 
-    protected $table = 'user_Linkedin';
+    protected $table = 'user_linkedin';
 
     public function user()
     {
