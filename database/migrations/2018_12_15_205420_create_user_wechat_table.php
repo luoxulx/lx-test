@@ -14,9 +14,13 @@ class CreateUserWechatTable extends Migration
     public function up()
     {
         Schema::create('user_wechat', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->integer('id')->index()->unsigned()->nullable(false)->comment('id');
+            $table->integer('user_id')->index()->unsigned()->nullable(false)->comment('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users'); // ->onDelete('cascade')->onUpdate('cascade')
         });
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `user_linkedin` comment 'user_wechat table'");
     }
 
     /**

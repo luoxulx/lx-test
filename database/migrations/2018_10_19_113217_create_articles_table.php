@@ -16,7 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('category_id')->unsigned()->nullable(false);
-            $table->tinyInteger('user_id')->unsigned()->nullable(false);
+            $table->integer('user_id')->unsigned()->nullable(false);
             $table->tinyInteger('is_draft')->unsigned()->default(0)->comment('是否草稿');
             $table->integer('view_count')->unsigned()->default(0)->comment('点击查看计数');
             $table->string('title', 255)->nullable(false)->comment('title');
@@ -30,6 +30,7 @@ class CreateArticlesTable extends Migration
             $table->softDeletes();
 
             $table->index('slug');
+            $table->foreign('user_id')->references('id')->on('users'); // ->onDelete('cascade')->onUpdate('cascade')
         });
 
         \Illuminate\Support\Facades\DB::statement("ALTER TABLE `articles` comment 'articles table'");

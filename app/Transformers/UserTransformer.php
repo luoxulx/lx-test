@@ -18,7 +18,11 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $user)
     {
         $res = $user->attributesToArray();
-        $res['github_info'] = $user->githubInfo()->get();
+        $res['github_info'] = $user->githubInfo()->first();
+        $res['facebook_info'] = $user->facebookInfo()->first();
+        $res['google_info'] = $user->googleInfo()->first();
+        $res['twitter_info'] = $user->twitterInfo()->first();
+        $res['linkedin_info'] = $user->linkedinInfo()->first();
         return $res;
     }
 }

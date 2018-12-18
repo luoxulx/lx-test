@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <title>{{ config('app.name', '14k JR') }}</title>
-    <meta name="author" content="14k">
+    <title>{{ config('app.name', '14k.Frankenstein') }}</title>
+    <meta name="author" content="14k.Frankenstein">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">

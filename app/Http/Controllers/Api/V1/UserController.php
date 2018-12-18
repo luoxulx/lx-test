@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 
+use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
@@ -28,9 +29,9 @@ class UserController extends ApiController
     {
         return $this->response->json([
             'roles'=>['admin'],
-            'introduction'=>'test-test-14k',
+            'introduction'=>'14k.Frankenstein',
             'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-            'name'=>'14k'
+            'name'=>'14k.Frankenstein'
         ]);
     }
 
@@ -60,17 +61,22 @@ class UserController extends ApiController
         return $this->response->collection($this->user->paginate($per_page), new UserTransformer);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store (Request $request): \Illuminate\Http\JsonResponse
+    public function show($id)
     {
-        $this->user->create($request->all());
-        return $this->response->withCreated();
+        return $this->response->item($this->user->getById($id), new UserTransformer());
     }
 
-    public function update($id, Request $request): \Illuminate\Http\JsonResponse
+    /**
+     * @param UserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store (UserRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $this->user->create($request->all());
+        return $this->response->withCreated($this->user->create($request->all()), new UserTransformer());
+    }
+
+    public function update($id, UserRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->user->update($id, $request->all());
         return $this->response->withPutted();

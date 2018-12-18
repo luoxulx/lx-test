@@ -21,6 +21,11 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'password',
     ];
 
+    protected function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -29,13 +34,6 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
-    public function githubInfo()
-    {
-        return $this->hasOne(UserGithub::class, 'user_id', 'id');
-    }
-
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -56,5 +54,34 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    # user info other table--------------------------------------------start
+
+    public function githubInfo()
+    {
+        return $this->hasOne(UserGithub::class, 'user_id', 'id');
+    }
+
+    public function facebookInfo()
+    {
+        return $this->hasOne(UserFacebook::class, 'user_id', 'id');
+    }
+
+    public function googleInfo()
+    {
+        return $this->hasOne(UserGoogle::class, 'user_id', 'id');
+    }
+
+    public function linkedinInfo()
+    {
+        return $this->hasOne(UserLinkedin::class, 'user_id', 'id');
+    }
+
+    public function twitterInfo()
+    {
+        return $this->hasOne(UserTwitter::class, 'user_id', 'id');
+    }
+
+    # user info other table--------------------------------------------end
 
 }

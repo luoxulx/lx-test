@@ -73,7 +73,10 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
     Route::post('/upload/qiniu_list', 'FileController@qiniuList')->name('api.upload.qiniu_list');
     Route::post('/upload/qiniu_del', 'FileController@qiniuDelOne')->name('api.upload.qiniu_del');
 
-    // file ---------- qiniu---------- manage
+    // file ---------- local---------- manage
+    Route::post('/upload/local_upload', 'FileController@localUpload')->name('api.upload.local_upload');
+    Route::post('/upload/local_index', 'FileController@localIndex')->name('api.upload.local_index');
+    Route::post('/upload/local_delete', 'FileController@localDelFile')->name('api.upload.local_delete');
 
 });
 

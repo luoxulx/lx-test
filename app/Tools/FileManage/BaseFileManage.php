@@ -2,32 +2,37 @@
 /**
  * Created by PhpStorm.
  * User: luoxulx
- * Date: 2018/12/15
- * Time: 下午2:24
+ * Date: 2018/12/16
+ * Time: 下午2:01
  */
 
-namespace App\Tools\LocalUpload;
+namespace App\Tools\FileManage;
 
 use Carbon\Carbon;
-//use Dflydev\ApacheMimeTypes\PhpRepository;
+use \Exception as UploadException;
 use Illuminate\Support\Facades\Storage;
+use Dflydev\ApacheMimeTypes\PhpRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-
-class FileManage
+class BaseFileManage
 {
-
-    protected $localDisk;
+    /**
+     * @var $disk
+     */
+    protected $disk;
 
     /**
      * @var PhpRepository $mimeDetect
      */
     protected $mimeDetect;
 
-
+    /**
+     * UploadManager constructor.
+     * @param PhpRepository $mimeDetect
+     */
     public function __construct()
     {
-        $this->localDisk = Storage::disk(config('filesystems.default', 'public'));
+        $this->disk = Storage::disk(config('filesystems.default', 'public'));
     }
 
     /**
@@ -58,7 +63,6 @@ class FileManage
         ]);
     }
 
-
     /**
      * Get all the subfolders by folder.
      *
@@ -68,7 +72,7 @@ class FileManage
     public function getSubfolderList($folder)
     {
         $subfolders = [];
-        foreach (array_unique($this->localDisk->directories($folder)) as $subfolder) {
+        foreach (array_unique($this->disk->directories($folder)) as $subfolder) {
             $subfolders["/$subfolder"] = basename($subfolder);
         }
 
@@ -85,7 +89,7 @@ class FileManage
     {
         $files = [];
 
-        $filesContent = $this->localDisk->files($folder);
+        $filesContent = $this->disk->files($folder);
 
         foreach ($filesContent as $file) {
             $files[] = $this->fileDetail($file);
@@ -143,7 +147,7 @@ class FileManage
             'name' => basename($path),
             'fullPath' => $path,
             'webPath'  => $this->fileWebPath($path),
-            // 'mimeType' => $this->fileMimeType($path),
+            'mimeType' => $this->fileMimeType($path),
             'size'     => $this->fileSize($path),
             'modified' => $this->fileModified($path)
         ];
@@ -181,7 +185,7 @@ class FileManage
      */
     public function fileSize($path)
     {
-        return human_filesize($this->localDisk->size($path));
+        return human_filesize($this->disk->size($path));
     }
 
     /**
@@ -193,7 +197,7 @@ class FileManage
     public function fileModified($path)
     {
         return Carbon::createFromTimestamp(
-            substr($this->localDisk->lastModified($path), 0, 10)
+            substr($this->disk->lastModified($path), 0, 10)
         )->toDateTimeString();
     }
 
@@ -202,16 +206,17 @@ class FileManage
      *
      * @param $folder
      * @return string
+     * @throws UploadException
      */
     public function createFolder($folder)
     {
         $this->cleanFolder($folder);
 
         if ($this->checkFolder($folder)) {
-            throw new UploadException("The Folder exists.");
+            throw new UploadException('The Folder exists.');
         }
 
-        return $this->localDisk->makeDirectory($folder);
+        return $this->disk->makeDirectory($folder);
     }
 
     /**
@@ -222,7 +227,7 @@ class FileManage
      */
     public function checkFolder($folder)
     {
-        return $this->localDisk->exists($folder);
+        return $this->disk->exists($folder);
     }
 
     /**
@@ -242,7 +247,7 @@ class FileManage
 
         $mime = $file->getMimeType();
 
-        $realPath = $this->localDisk->putFileAs($dir, $file, $hashName);
+        $realPath = $this->disk->putFileAs($dir, $file, $hashName);
 
         return [
             'success' => true,
@@ -264,7 +269,7 @@ class FileManage
      */
     public function checkFile($path)
     {
-        return $this->localDisk->exists($path);
+        return $this->disk->exists($path);
     }
 
     /**
@@ -278,15 +283,15 @@ class FileManage
         $this->cleanFolder($folder);
 
         $filesFolders = array_merge(
-            $this->localDisk->directories($folder),
-            $this->localDisk->files($folder)
+            $this->disk->directories($folder),
+            $this->disk->files($folder)
         );
 
         if (!empty($filesFolders)) {
             return false;
         }
 
-        return $this->localDisk->deleteDirectory($folder);
+        return $this->disk->deleteDirectory($folder);
     }
 
     /**
@@ -299,7 +304,6 @@ class FileManage
     {
         $this->cleanFolder($path);
 
-        return $this->localDisk->delete($path);
+        return $this->disk->delete($path);
     }
-
 }

@@ -33,7 +33,7 @@ class BaiduTranslate
         $args = array(
             'q' => $query,
             'appid' => $this->translateAppId,
-            'salt' => mt_rand(10000, 99999),
+            'salt' => random_int(10000, 99999),
             'from' => $from,
             'to' => $to
         );
@@ -59,22 +59,22 @@ class BaiduTranslate
     }
 
     //加密
-    private function buildSign($query, $appID, $salt, $secKey)
+    private function buildSign($query, $appID, $salt, $secKey): string
     {
         return md5($appID . $query . $salt . $secKey);
     }
 
     //发起网络请求
-    private function call($url, $args=null, $method='POST', $testflag = 0, $timeout = 10, $headers=array())
+    private function call($url, $args=null, $method='POST', $timeout = 10, $headers=array())
     {
         $ret = false;
         $i = 0;
         while($ret === false)
         {
-            if($i > 1)
+            if($i > 1) {
                 break;
-            if($i > 0)
-            {
+            }
+            if($i > 0) {
                 sleep(1);
             }
             $ret = $this->callOnce($url, $args, $method, false, $timeout, $headers);
@@ -86,7 +86,7 @@ class BaiduTranslate
     private function callOnce($url, $args=null, $method='post', $withCookie = false, $timeout = 10, $headers=array())
     {
         $ch = curl_init();
-        if($method == "post")
+        if($method === 'post')
         {
             $data = $this->convert($args);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -97,7 +97,7 @@ class BaiduTranslate
             $data = $this->convert($args);
             if($data)
             {
-                if(stripos($url, "?") > 0)
+                if(stripos($url, '?') > 0)
                 {
                     $url .= "&$data";
                 }
@@ -123,14 +123,14 @@ class BaiduTranslate
         return $r;
     }
 
-    private function convert(&$args)
+    private function convert(&$args): string
     {
         $data = '';
-        if (is_array($args))
+        if (\is_array($args))
         {
             foreach ($args as $key=>$val)
             {
-                if (is_array($val))
+                if (\is_array($val))
                 {
                     foreach ($val as $k=>$v)
                     {
@@ -139,10 +139,10 @@ class BaiduTranslate
                 }
                 else
                 {
-                    $data .="$key=".rawurlencode($val)."&";
+                    $data .="$key=".rawurlencode($val).'&';
                 }
             }
-            return trim($data, "&");
+            return trim($data, '&');
         }
         return $args;
     }

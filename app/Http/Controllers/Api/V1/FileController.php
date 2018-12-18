@@ -9,8 +9,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Tools\Qiniu\QiniuTool;
 use Illuminate\Http\Request;
+use App\Tools\Qiniu\QiniuTool;
+use App\Tools\FileManage\BaseFileManage;
 
 class FileController extends ApiController
 {
@@ -23,13 +24,120 @@ class FileController extends ApiController
         parent::__construct();
 
         $this->qiniuDisk = new QiniuTool();
+        $this->localDisk = new BaseFileManage();
     }
 
     #local --------- start
 
-    public function localUpload()
+    public function localIndex(Request $request)
     {
-        return 1;
+        $data = $this->localDisk->folderInfo($request->get('prefix'));
+
+        return $this->response->json([ 'data' => $data ]);
+
+    }
+
+    public function localUpload(Request $request)
+    {
+        $prefix = $request->get('prefix', 'test_file/'); //必须带 /
+
+        if (!$request->hasFile('file')) {
+            return $this->response->json([
+                'success' => false,
+                'error' => 'no file found.',
+            ]);
+        }
+
+        $path = $prefix . date('Y') . '/' . date('m');
+
+        $result = $this->localDisk->store($request->file('file'), $path);
+
+        return $this->response->json($result);
+    }
+
+    /**
+     * Create the folder.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function localCreateFolder(Request $request)
+    {
+        $folder = $request->get('folder');
+
+        $data = $this->localDisk->createFolder($folder);
+
+        return $this->response->json([ 'data' => $data ]);
+    }
+
+    /**
+     * Delete the file.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function localDelFile(Request $request)
+    {
+        $path = $request->get('path');
+
+        $data = $this->localDisk->deleteFile($path);
+
+        return $this->response->json([ 'data' => $data ]);
+    }
+
+
+
+    /**
+     * Delete the folder.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function localDelFolder(Request $request)
+    {
+        $del_folder = $request->get('del_folder');
+
+        $folder = $request->get('folder') . '/' . $del_folder;
+
+        $data = $this->localDisk->deleteFolder($folder);
+
+        if(!$data) {
+            return $this->response->withForbidden('The directory must be empty to delete it.');
+        }
+
+        return $this->response->json([ 'data' => $data ]);
+    }
+
+
+
+    /**
+     * Upload the file for file manager.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function localUploadForManager(Request $request)
+    {
+        $file = $request->file('file');
+
+        $fileName = $request->get('name')
+            ? $request->get('name').'.'.explode('/', $file->getClientMimeType())[1]
+            : $file->getClientOriginalName();
+
+        $path = str_finish($request->get('folder'), '/');
+
+        if ($this->localDisk->checkFile($path.$fileName)) {
+            return $this->response->withBadRequest('This File exists.');
+        }
+
+        $result = $this->localDisk->store($file, $path, $fileName);
+
+        return $this->response->json($result);
+
     }
     # local --------- end
 
@@ -39,7 +147,7 @@ class FileController extends ApiController
     {
         return $this->response->json([
             'qiniu_token' => $this->qiniuDisk->uploadToken(),
-            'qiniu_key' => md5(uniqid('14k', true).time())
+            'qiniu_key' => md5(uniqid('14k.Frankenstein', true).time())
         ]);
     }
 

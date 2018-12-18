@@ -5,6 +5,7 @@
 </p>
 
 <p>php composer.phar install -vvv</p>
+<p>php artisan storage:link</p>
 <p>cp .env.example .env</p>
 <p>add DB info into .env</p>
 <p>php artisan key:generate</p>
