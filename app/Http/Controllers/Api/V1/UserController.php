@@ -28,10 +28,33 @@ class UserController extends ApiController
     public function user_info(): \Illuminate\Http\JsonResponse
     {
         return $this->response->json([
+            'name'=>'14k.Frankenstein',
+            'userid' => 1,
+            'email' => 'xxx@qq.com',
             'roles'=>['admin'],
+            'avatar'=>'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+            'signature' => 'signature signature signature signature',
             'introduction'=>'14k.Frankenstein',
-            'avatar'=>'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-            'name'=>'14k.Frankenstein'
+            'title' => 'title',
+            'group' => 'group',
+            'tags' => [
+                ['key' => 0, 'label' => '测试1'],
+                ['key' => 1, 'label' => '测试2'],
+                ['key' => 2, 'label' => '测试3'],
+                ['key' => 3, 'label' => '测试4'],
+                ['key' => 4, 'label' => '测试5'],
+                ['key' => 5, 'label' => '测试6'],
+                ['key' => 6, 'label' => '测试7'],
+                ['key' => 7, 'label' => '测试8']
+            ],
+            'notifyCount' => 12,
+            'country' => 'China',
+            'geographic' => [
+                'province' => ['label' => '浙江', 'key' => '330000'],
+                'city' => ['label' => '杭州', 'key' => '330100']
+            ],
+            'address' => '杭州市滨江区长河镇长一村22-2号',
+            'phone' => '23561-32132132'
         ]);
     }
 

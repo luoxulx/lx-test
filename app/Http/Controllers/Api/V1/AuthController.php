@@ -32,12 +32,32 @@ class AuthController extends ApiController
         $token = Auth::guard('api')->attempt($params);
 
         if ($token) {
-            $this->response->setStatusCode(201);
-            return $this->response->json(['token' => 'bearer '.$token , 'Access-Key' => str_random()], ['Authorization' => 'bearer '.$token]);
+            $access_key = str_random(32);
+            cache(['temp_access_key' => $access_key], 60);
+
+            return $this->response
+                ->json([
+                    'message' => 'successful',
+                    'token' => 'bearer '.$token,
+                    'key' => $access_key
+                    ]);
         }
 
-        $this->response->setStatusCode(401);
-        return $this->response->json(['message' => 'Refused to login！']);
+        return $this->response
+            ->setStatusCode(401)
+            ->json(['message' => 'Refused to login！']);
+    }
+
+    public function refershToken()
+    {
+        $token = Auth::guard('api')->refresh();
+
+        return $this->response->json(['token'=>$token]);
+    }
+
+    public function me()
+    {
+        return $this->response->json(['data'=>Auth::guard('api')->user()]);
     }
 
     public function logout()

@@ -12,16 +12,20 @@
 |
 */
 
-Route::post('/login/login', 'Api\\V1\\AuthController@login')->name('api.login.login');
+Route::post('/auth/login', 'Api\\V1\\AuthController@login')->name('api.auth.login');
 
-//Route::group(['middleware' => 'jwt.refresh'], function(){
-//    Route::get('/login/refresh', 'Api\\V1\\AuthController@refresh');
-//});
+Route::group(['middleware' => 'jwt.refresh'], function(){
+    Route::get('/auth/refresh', 'Api\\V1\\AuthController@refershToken')->name('api.auth.refresh');
+});
+
+// open api
+Route::get('/open/captcha', 'Api\\V1\\OpenController@captcha')->name('api.open.captcha');
 
 // 后台接口  会JWT鉴权
 Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], function () { //'middleware'=>['auth:api', 'operation']
 
-    Route::post('/login/logout', 'AuthController@logout')->name('api.login.logout');
+    Route::post('/auth/logout', 'AuthController@logout')->name('api.auth.logout');
+
     Route::get('/user/user_info', 'UserController@user_info')->name('api.user.user_info');
     Route::get('/user/transaction/list', 'UserController@transaction_list');
 

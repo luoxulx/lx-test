@@ -39,6 +39,8 @@ class Response
      */
     private $statusCode = HttpResponse::HTTP_OK;
 
+    private $status = true;
+
     /**
      * Create a new class instance.
      *
@@ -172,7 +174,7 @@ class Response
      */
     public function withError($message = 'Something Error'): \Illuminate\Http\JsonResponse
     {
-        return $this->json(['message' => $message, 'status' => false]);
+        return $this->json(['message' => $message, 'status' => $this->status]);
     }
 
     /**
@@ -208,6 +210,7 @@ class Response
      */
     public function json($data = [], array $headers = []): \Illuminate\Http\JsonResponse
     {
+        $data['status'] = $this->status;
         return $this->response->json($data, $this->statusCode, $headers);
     }
 
@@ -221,6 +224,10 @@ class Response
     public function setStatusCode($statusCode): self
     {
         $this->statusCode = $statusCode;
+
+        if ($statusCode <= 200 && $statusCode > 300) {
+            $this->status = false;
+        }
 
         return $this;
     }
