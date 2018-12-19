@@ -28,9 +28,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('file_manage', function ($app) {
-            $config = config('filesystems.default', 'public');
-            # TODO 改为第三方存储
-            if ($config === 'qiniu') {
+            $disk_config = config('filesystems.default', 'public');
+            # TODO 第三方存储  默认 public=>local
+            if ($disk_config === 'oss') {
+                return new \App\Tools\FileManage\QiniuManage();
+            }
+            if ($disk_config === 'qiniu') {
                 return new \App\Tools\FileManage\QiniuManage();
             }
 

@@ -256,8 +256,8 @@ class BaseFileManage
             'mime' => $mime,
             'size' => human_filesize($file->getClientSize()),
             'real_path' => $realPath,
-            'relative_url' => "storage/$realPath",
-            'url' => asset("storage/$realPath"),
+            'relative_url' => 'storage/' . $realPath,
+            'url' => asset('storage/' . $realPath),
         ];
     }
 

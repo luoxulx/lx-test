@@ -64,6 +64,21 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'domains' => [
+                'default'   => 'cdn.lnmpa.top', //你的七牛域名
+                'https'     => 'cdn.lnmpa.top',         //你的HTTPS域名
+                'custom'    => 'static.abc.com',                //Useless 没啥用，请直接使用上面的 default 项
+            ],
+            'access_key'=> env('QI_NIU_AK'),  //AccessKey
+            'secret_key'=> env('QI_NIU_SK'),  //SecretKey
+            'bucket'    => 'luoxulx-q-oss',  //Bucket名字
+            'notify_url'=> null,  //持久化处理回调地址
+            'access'    => 'public',  //空间访问控制 public 或 private
+            'hotlink_prevention_key' => 'ktCfMt5hmq5smOmU30fbI6nyZ', // CDN 时间戳防盗链的 key。 设置为 null 则不启用本功能。
+        ]
+
     ],
 
 ];

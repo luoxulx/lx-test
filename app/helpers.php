@@ -45,18 +45,6 @@ if (!function_exists('v4UUID')) {
     }
 }
 
-if (function_exists('filenameRandom')) {
-    function filenameRandom($ext = ''): string
-    {
-        $key = hash('ripemd160', uniqid('laravel_', true).time());
-        if (trim($ext)) {
-            $key .= $ext;
-        }
-        return $key;
-    }
-}
-
-
 if (! function_exists('buildPicUrl')) {
     /**
      * 转换图片url
@@ -75,7 +63,7 @@ if (! function_exists('buildPicUrl')) {
         if ($https === true) {
             $domain = 'https://cdn.lnmpa.top/';
         }
-        if (! in_array($style, ['-pic640x320', '-pic240x120'])) {
+        if (! in_array($style, ['-pic640x320', '-pic240x120', '-watermark'])) {
             return $domain . $url;
         }
 
@@ -135,7 +123,6 @@ if (! function_exists('zh_to_pinyin')) {
     }
 }
 
-
 if (!function_exists('bd_translate')) {
     /**
      * 谨慎使用
@@ -151,130 +138,10 @@ if (!function_exists('bd_translate')) {
      * @param string $to
      * @return bool
      */
-    function bd_translate(string $string, string $from = 'auto', string $to = 'en')
+    function bd_translate($query, $from='auto', $to='en')
     {
-        function buildSign($query, $appID, $salt, $secKey)
-        {
-            return md5($appID . $query . $salt . $secKey);
-        }
+        $bdObj = new \App\Tools\BaiduTranslate\BaiduTranslate();
 
-        function call($url, $args=null, $method='post', $timeout = 10, $headers=array())
-        {/*{{{*/
-            $ret = false;
-            $i = 0;
-            while($ret === false)
-            {
-                if($i > 1)
-                    break;
-                if($i > 0)
-                {
-                    sleep(1);
-                }
-                $ret = callOnce($url, $args, $method, false, $timeout, $headers);
-                $i++;
-            }
-            return $ret;
-        }/*}}}*/
-
-        function callOnce($url, $args=null, $method='post', $withCookie = false, $timeout = 10, $headers=array())
-        {
-            $ch = curl_init();
-            if($method == 'post')
-            {
-                $data = convert($args);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_POST, 1);
-            }
-            else
-            {
-                $data = convert($args);
-                if($data)
-                {
-                    if(stripos($url, "?") > 0)
-                    {
-                        $url .= "&$data";
-                    }
-                    else
-                    {
-                        $url .= "?$data";
-                    }
-                }
-            }
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if(!empty($headers))
-            {
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            }
-            if($withCookie)
-            {
-                curl_setopt($ch, CURLOPT_COOKIEJAR, $_COOKIE);
-            }
-            $r = curl_exec($ch);
-            curl_close($ch);
-            return $r;
-        }
-
-        function convert(&$args)
-        {
-            $data = '';
-            if (is_array($args))
-            {
-                foreach ($args as $key=>$val)
-                {
-                    if (is_array($val))
-                    {
-                        foreach ($val as $k=>$v)
-                        {
-                            $data .= $key.'['.$k.']='.rawurlencode($v).'&';
-                        }
-                    }
-                    else
-                    {
-                        $data .="$key=".rawurlencode($val)."&";
-                    }
-                }
-                return trim($data, "&");
-            }
-            return $args;
-        }
-
-        $app_id = config('my.bd_translate.app_id');
-        $secret_key = config('my.bd_translate.secret_key');
-        $url = config('my.bd_translate.url');
-
-        if (! $app_id || ! $secret_key || ! $url) {
-            return $string.'----error----';
-        }
-
-        $args = array(
-            'q' => $string,
-            'appid' => $app_id,
-            'salt' => mt_rand(10000,99999),
-            'from' => $from,
-            'to' => $to,
-            'sign' => ''
-        );
-
-        $args['sign'] = buildSign($string, $app_id, $args['salt'], $secret_key);
-
-        $result = call($url, $args);
-
-        $result = json_decode($result, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return false;
-        }
-
-        if (isset($result['error_code'])) {
-            // return ['message' => $result['error_msg']];
-            return false;
-        }
-
-        if (isset($result['trans_result'][0]['dst'])) {
-            return $result['trans_result'][0]['dst'];
-        }
-
-        return false;
+        return $bdObj->translate_str($query, $from, $to);
     }
 }

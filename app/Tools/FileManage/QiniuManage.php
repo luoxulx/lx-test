@@ -9,115 +9,50 @@
 namespace App\Tools\FileManage;
 
 use Carbon\Carbon;
-
-use Qiniu\Auth;
-use Qiniu\Storage\BucketManager;
-use Qiniu\Storage\UploadManager;
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 class QiniuManage extends BaseFileManage
 {
 
-    protected $auth;
 
-    protected $token;
-
-    protected $qiniuDisk;
-
-
-    public function __construct()
+    public function fileExist($key)
     {
-        parent::__construct();
-
-        $this->auth = new Auth(config('my.qiniu_config.ak'), config('my.qiniu_config.sk'));
-
-        $this->token = $this->auth->uploadToken(config('my.qiniu_config.bucket'));
-
-        $this->qiniuDisk = new UploadManager();
+        return $this->disk->exists($key);
     }
 
-    public function getFileList($path, $limit = 1000)
+    public function get($key)
     {
-        $bucketMgr = new BucketManager($this->auth);
-        $list = $bucketMgr->listFiles(config('my.qiniu_config.bucket'), $path, '', $limit, '/');
-
-        return $list[0]['items'];
+        return $this->disk->get($key);
     }
 
-    public function fileDetail()
+    public function store(UploadedFile $file, $dir = '', $name = '')
     {
-        dd(1);
-    }
-
-    public function fileWebPath($path)
-    {
-        return $this->disk->getUrl($path);
-    }
-
-
-    public function fileMimeType($path)
-    {
-        return $this->disk->getMimetype($path);
-    }
-
-
-    public function fileSize($path)
-    {
-        return human_filesize($this->disk->getSize($path));
-    }
-
-
-    public function fileModified($path)
-    {
-        return Carbon::createFromTimestamp(
-            substr($this->disk->getTimestamp($path), 0, 10)
-        )->toDateTimeString();
-    }
-
-    public function createFolder($folder)
-    {
-        $this->cleanFolder($folder);
-
-        if ($this->checkFolder($folder)) {
-            throw new FileException('The Folder exists.');
-        }
-
-        return $this->disk->createDir($folder);
-    }
-
-
-    public function store(UploadedFile $file, $prefix= '', $name = '')
-    {
-
         $hashName = empty($name)
             ? str_ireplace('.jpeg', '.jpg', $file->hashName())
             : $name;
 
         $mime = $file->getMimeType();
 
-        $realPath = $this->disk->putFileAs($prefix, $file, $hashName);
+        $realPath = $this->disk->putFileAs($dir, $file, $hashName);
 
+        $style = 'imageView2/0/q/75|watermark/2/text/aHR0cHM6Ly93d3cubG5tcGEudG9w/font/c2Vnb2Ugc2NyaXB0/fontsize/640/fill/IzUyMTJBNQ==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim';
 
+        return [
+            'success' => true,
+            'filename' => $hashName,
+            'original_name' => $file->getClientOriginalName(),
+            'mime' => $mime,
+            'size' => human_filesize($file->getClientSize()),
+            'real_path' => $realPath,
+            'relative_url' => $realPath,
+            'url' => $this->disk->getDriver()->imagePreviewUrl($realPath, $style),
+            'url_s' => $this->disk->getDriver()->downloadUrl($realPath, 'https'),
+        ];
     }
 
-    public function deleteFolder()
+    public function prepend($key, $content)
     {
-        dd(1);
+        return $this->disk->prepend($key, $content);
     }
-
-    public function deleteFile($path)
-    {
-        $bucketMgr = new BucketManager($this->auth);
-        return $bucketMgr->delete(config('my.qiniu_config.bucket'), $path);
-    }
-
-    public function stat($key)
-    {
-        $bucketMgr = new BucketManager($this->auth);
-
-        return $bucketMgr->stat(config('my.qiniu_config.bucket'), $key);
-    }
-
 }

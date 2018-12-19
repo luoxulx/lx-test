@@ -39,20 +39,20 @@ class FileController extends ApiController
      */
     public function fileUpload(Request $request)
     {
-        $strategy = $request->get('prefix', 'test/');
+        $strategy = $request->get('prefix', 'temp'); //不带 /
 
         if (!$request->hasFile('file')) {
-            return $this->response->json([
+            return $this->response->json(['data' => [
                 'success' => false,
-                'error' => 'no file found.',
-            ]);
+                'error' => 'no file found.'
+            ]]);
         }
 
         $path = $strategy . '/' . date('Y') . '/' . date('m');
 
         $result = $this->manager->store($request->file('file'), $path);
 
-        return $this->response->json($result);
+        return $this->response->json(['data'=>$result]);
     }
 
     /**
@@ -133,6 +133,6 @@ class FileController extends ApiController
 
         $result = $this->manager->store($file, $path, $fileName);
 
-        return $this->response->json($result);
+        return $this->response->json(['data'=>$result]);
     }
 }

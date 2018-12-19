@@ -21,17 +21,21 @@ return array(
         ],
     ],
 
-    'qiniu_config' => [
-        'ak' => env('QI_NIU_AK'),
-        'sk' => env('QI_NIU_SK'),
-        'bucket' => env('QI_NIU_BUCKET'),
-        'domain' => env('QI_NIU_DOMAIN'),
-        'notify_url' => env('QI_NIU_NOTIFY_URL', null),
-    ],
-
+    // bai du translate
     'bd_translate' => [
         'app_id' => env('BD_TRANSLATE_ID'),
         'secret_key' => env('BD_TRANSLATE_SK'),
         'url' => 'https://api.fanyi.baidu.com/api/trans/vip/translate?',
     ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Pattern and storage path settings
+     |--------------------------------------------------------------------------
+     |
+     | The env key for pattern and storage path with a default value
+     |
+     */
+    'pattern' => env('LOGVIEWER_PATTERN', '*.log'),
+    'storage_path' => env('LOGVIEWER_STORAGE_PATH', storage_path('logs')),
 );
