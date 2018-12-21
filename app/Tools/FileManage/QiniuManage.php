@@ -39,7 +39,6 @@ class QiniuManage extends BaseFileManage
         $style = 'imageView2/0/q/75|watermark/2/text/aHR0cHM6Ly93d3cubG5tcGEudG9w/font/c2Vnb2Ugc2NyaXB0/fontsize/640/fill/IzUyMTJBNQ==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim';
 
         return [
-            'success' => true,
             'filename' => $hashName,
             'original_name' => $file->getClientOriginalName(),
             'mime' => $mime,

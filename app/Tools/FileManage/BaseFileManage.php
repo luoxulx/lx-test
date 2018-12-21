@@ -250,7 +250,6 @@ class BaseFileManage
         $realPath = $this->disk->putFileAs($dir, $file, $hashName);
 
         return [
-            'success' => true,
             'filename' => $hashName,
             'original_name' => $file->getClientOriginalName(),
             'mime' => $mime,

@@ -39,7 +39,7 @@ class FileController extends ApiController
      */
     public function fileUpload(Request $request)
     {
-        $strategy = $request->get('prefix', 'temp'); //不带 /
+        $strategy = $request->get('path', 'temp'); //不带 /
 
         if (!$request->hasFile('file')) {
             return $this->response->json(['data' => [
@@ -64,7 +64,7 @@ class FileController extends ApiController
      */
     public function deleteFile(Request $request)
     {
-        $path = $request->get('prefix');
+        $path = $request->get('path');
 
         $data = $this->manager->deleteFile($path);
 
@@ -80,7 +80,7 @@ class FileController extends ApiController
      */
     public function createFolder(Request $request)
     {
-        $folder = $request->get('folder');
+        $folder = $request->get('path');
 
         $data = $this->manager->createFolder($folder);
 
@@ -98,7 +98,7 @@ class FileController extends ApiController
     {
         $del_folder = $request->get('del_folder');
 
-        $folder = $request->get('folder') . '/' . $del_folder;
+        $folder = $request->get('path') . '/' . $del_folder;
 
         $data = $this->manager->deleteFolder($folder);
 
@@ -125,7 +125,7 @@ class FileController extends ApiController
             ? $request->get('name').'.'.explode('/', $file->getClientMimeType())[1]
             : $file->getClientOriginalName();
 
-        $path = str_finish($request->get('folder'), '/');
+        $path = str_finish($request->get('path'), '/');
 
         if ($this->manager->checkFile($path.$fileName)) {
             return $this->response->withBadRequest('This File exists.');
