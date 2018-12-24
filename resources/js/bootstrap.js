@@ -11,7 +11,9 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) {
+    console.error(e)
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -53,3 +55,25 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/* lx-test  */
+// import './other/responsiveslides.min.js';
+
+$(function () {
+  // 1
+  $('span.menu').click(function() {
+    $( ".head-nav ul" ).slideToggle(300, function() {
+      // Animation complete.
+    })
+  })
+
+  // 2
+  // $('#slider').responsiveSlides({
+  //   auto: true,
+  //   nav: true,
+  //   speed: 500,
+  //   namespace: 'callbacks',
+  //   pager: true,
+  // })
+})
+

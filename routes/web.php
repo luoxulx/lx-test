@@ -11,9 +11,9 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // 原本的Auth login
 Auth::routes();
@@ -33,7 +33,7 @@ Route::group(['namespace'=>'Auth'], function (){
 });
 
 Route::group(['namespace'=>'Front'], function (){
-    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/post', 'ArticleController@index');
     Route::get('/{slug}', 'ArticleController@show');

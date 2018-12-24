@@ -28,9 +28,9 @@ class HomeController extends Controller
     public function index()
     {
         //var_dump(auth()->user());die;
-        $articles = $this->article->page(10);
+        // $articles = $this->article->page(10);
 
-        return view('home.index', compact('articles'));
+        return view('home.index');
     }
 
 
@@ -38,16 +38,16 @@ class HomeController extends Controller
      * common data method
      * @param \Illuminate\View\View $view
      */
-    public static function common_data(View $view): void
-    {
-        $data = [];
-        $data['all_tags'] = Cache::remember(__CLASS__.'-all_tags', 10, function () {
-            return Tag::all(['id','name','color','style','description'])->toArray();
-        });
-        $data['all_categories'] = Cache::remember(__CLASS__.'-all_categories', 10, function () {
-            return Category::all(['id','parent_id','name','description','thumbnail'])->toArray();
-        });
-
-        $view->with('common_data', $data);
-    }
+//    public static function common_data(View $view): void
+//    {
+//        $data = [];
+//        $data['all_tags'] = Cache::remember(__CLASS__.'-all_tags', 10, function () {
+//            return Tag::all(['id','name','color','style','description'])->toArray();
+//        });
+//        $data['all_categories'] = Cache::remember(__CLASS__.'-all_categories', 10, function () {
+//            return Category::all(['id','parent_id','name','description','thumbnail'])->toArray();
+//        });
+//
+//        $view->with('common_data', $data);
+//    }
 }
