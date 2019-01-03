@@ -48,7 +48,8 @@ class FileController extends ApiController
             ]]);
         }
 
-        $path = $strategy . '/' . date('Y') . '/' . date('m');
+        // $path = $strategy . '/' . date('Y') . '/' . date('m') . '/' .date('d');
+        $path = $strategy . '/' . date('Ymd');
 
         $result = $this->manager->store($request->file('file'), $path);
 
