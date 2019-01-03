@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    /(^_^)/~~
                 </div>
 
                 <div class="links">
@@ -92,6 +92,15 @@
                     <a href="/home">a</a>
                 </div>
             </div>
+
         </div>
+        <br><hr>
+        <footer>
+            <small>
+                <a href="{{ route('github.auth.login') }}">hub</a>
+                <a href="{{ route('facebook.auth.login') }}">face</a>
+                <a href="{{ route('google.auth.login') }}">goog</a>
+            </small>
+        </footer>
     </body>
 </html>

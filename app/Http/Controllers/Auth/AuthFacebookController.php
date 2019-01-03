@@ -40,7 +40,7 @@ class AuthFacebookController extends Controller
     public function handleProviderCallback()
     {
         $facebookUser = Socialite::driver('facebook')->user();
-        return response()->json(['as'=>$facebookUser]);
+        return response()->json(['aaa'=>$facebookUser]);
     }
 
     public function privacyPolicyView()

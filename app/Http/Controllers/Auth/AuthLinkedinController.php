@@ -31,6 +31,17 @@ class AuthLinkedinController extends Controller
         return Socialite::driver('linkedin')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
     }
 
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $linkedinUser = Socialite::driver('linkedin')->user();
+        return response()->json(['aaa'=>$linkedinUser]);
+    }
+
     public function privacyPolicyView()
     {
         return view('auth.privacy.linkedin');

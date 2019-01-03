@@ -5,15 +5,12 @@ window._ = require('lodash');
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
-
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+  window.Popper = require('popper.js').default;
+  window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
-} catch (e) {
-    console.error(e)
-}
+  require('bootstrap');
+} catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -34,9 +31,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -56,24 +53,4 @@ if (token) {
 //     encrypted: true
 // });
 
-/* lx-test  */
-// import './other/responsiveslides.min.js';
-
-$(function () {
-  // 1
-  $('span.menu').click(function() {
-    $( ".head-nav ul" ).slideToggle(300, function() {
-      // Animation complete.
-    })
-  })
-
-  // 2
-  // $('#slider').responsiveSlides({
-  //   auto: true,
-  //   nav: true,
-  //   speed: 500,
-  //   namespace: 'callbacks',
-  //   pager: true,
-  // })
-})
-
+/* lx-new */

@@ -40,7 +40,7 @@ class AuthGoogleController extends Controller
     public function handleProviderCallback()
     {
         $googleUser = Socialite::driver('google')->user();
-        return response()->json($googleUser);
+        return response()->json(['aaa'=>$googleUser]);
     }
 
     public function privacyPolicyView()

@@ -31,6 +31,17 @@ class AuthTwitterController extends Controller
         return Socialite::driver('twitter')->with(['slaughter'=>'dr_14k@yeah.net'])->redirect();
     }
 
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $twitterUser = Socialite::driver('twitter')->user();
+        return response()->json(['aaa'=>$twitterUser]);
+    }
+
     public function privacyPolicyView()
     {
         return view('auth.privacy.twitter');
