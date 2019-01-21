@@ -78,11 +78,6 @@
             {{--@endif--}}
 
             <div class="content">
-                <div class="title m-b-md">
-                    <img src="{{ asset('/storage/post/20190103/fd50YOCm34F2y29OSh4l6S1mZMrbb7qiEuDV1hzV.png') }}">
-                    /(^_^)/~~
-                </div>
-
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
                     <a href="https://laracasts.com">Laracasts</a>

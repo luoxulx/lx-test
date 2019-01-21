@@ -41,11 +41,8 @@ class FileController extends ApiController
     {
         $strategy = $request->get('path', 'temp'); //不带 /
 
-        if (!$request->hasFile('file')) {
-            return $this->response->json(['data' => [
-                'success' => false,
-                'error' => 'no file found.'
-            ]]);
+        if (! $request->hasFile('file')) {
+            return $this->response->withBadRequest('file not found');
         }
 
         // $path = $strategy . '/' . date('Y') . '/' . date('m') . '/' .date('d');
