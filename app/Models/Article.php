@@ -10,6 +10,46 @@ namespace App\Models;
 
 use App\Scopes\DraftScope;
 
+/**
+ * App\Models\Article
+ *
+ * @property int $id
+ * @property int $category_id
+ * @property int $user_id
+ * @property int $is_draft 是否草稿
+ * @property int $view_count 点击查看计数
+ * @property string $title title
+ * @property string $slug url slug for SEO
+ * @property string|null $source 来源网址
+ * @property string|null $description 描述
+ * @property string|null $thumbnail 缩略图
+ * @property array|null $content 主体内容json{raw,html}
+ * @property string $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \App\Models\Category $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereIsDraft($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereThumbnail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Article whereViewCount($value)
+ * @mixin \Eloquent
+ */
 class Article extends Models
 {
 

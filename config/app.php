@@ -154,6 +154,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...

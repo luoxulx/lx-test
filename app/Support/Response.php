@@ -225,7 +225,7 @@ class Response
     {
         $this->statusCode = $statusCode;
 
-        if ($statusCode < 200 || $statusCode >= 400) {
+        if ($statusCode !== 200) {
             $this->status = false;
         }
 

@@ -18,4 +18,18 @@ class CategoryRepository extends BaseRepository
     {
         $this->model = $category;
     }
+
+    /**
+     * @param array $columns
+     * @param null $keyword
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function all($columns = array('*'), $keyword = null)
+    {
+        if ($keyword) {
+            return $this->model->where('name', 'like', '%'.$keyword.'%')->get($columns);
+        }
+
+        return $this->model->get($columns);
+    }
 }

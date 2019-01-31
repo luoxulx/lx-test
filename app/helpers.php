@@ -56,7 +56,7 @@ if (! function_exists('buildPicUrl')) {
     function buildPicUrl($url=null, $style='-pic640x320', $https=true)
     {
         if ($url === null) {
-            return '/svg/default.png';
+            return 'http://cdn2.lnmpa.top/issues/default.png';
         }
         $domain = 'http://cdn.lnmpa.top/';
 

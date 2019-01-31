@@ -16,10 +16,13 @@
 
 <p>Docker:docker-compose start/stop</p>
 
-记录:
-创建 Markdown 模板,执行此命令之后，会在 app/mail 目录下面生成文件 Activate.php：
-php artisan make:mail Activate --markdown=emails.activate
+#### 记录:
+<p>创建 Markdown 模板,执行此命令之后，会在 app/mail 目录下面生成文件 Activate.php：
+php artisan make:mail Activate --markdown=emails.activate</p>
 
+##### ide_helper
+<p>生成文件：php artisan ide-helper:generate</p>
+<p>Eloqent 模型类中添加注释：php artisan ide-helper:model -WR   （需要doctrine/dbal包）</p>
 
 
 

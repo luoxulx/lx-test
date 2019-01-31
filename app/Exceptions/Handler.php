@@ -49,15 +49,27 @@ class Handler extends ExceptionHandler
     {
         // 为了兼容 api 返回 json
         if($request->is('api/*')) {
-            if($exception instanceof ValidationException){
-                return response()->json(['message'=>array_values($exception->errors())[0][0]], 422);
+            if ($exception instanceof ValidationException) {
+                return response()->json(['message' => array_values($exception->errors())[0][0]], 422);
             }
-//            else{
-//                $message = $exception->getMessage() ?? 'Illegal request！';
-//                return response()->json(['message'=>$message], 422);
-//            }
-        }
 
-        return parent::render($request, $exception);
+            // 针对异常，返回json格式 处理
+            $response = [];
+            $http_code = $this->convertExceptionToResponse($exception)->getStatusCode();
+            if ($http_code < 100 || $http_code >= 600) {
+                return response()->json(['message' => 'HTTP ERROR'], $http_code);
+            }
+
+            $response['message'] = (!$exception->getMessage()) ? 'SOME ERRORS OCCURRED.' : $exception->getMessage();
+
+            if (config('app.debug') === true) {
+                $response['trace'] = $exception->getTraceAsString();
+            }
+
+            return response()->json($response, $http_code);
+        } else {
+            // 官方原版
+            return parent::render($request, $exception);
+        }
     }
 }
