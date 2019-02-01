@@ -37,7 +37,7 @@ class FileController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function fileUpload(Request $request)
+    public function picUpload(Request $request)
     {
         $strategy = $request->get('path', 'temp'); //不带 /
 
@@ -51,6 +51,76 @@ class FileController extends ApiController
         $result = $this->manager->store($request->file('file'), $path);
 
         return $this->response->json(['data'=>$result]);
+    }
+
+    // file upload && chunk upload
+    public function fileUpload(Request $request)
+    {
+        set_time_limit(0);
+        ini_set('memory_limit','256M');
+
+        $this->validate($request, [
+            'file' => 'required'
+        ]);
+
+        $file = $request->file('file');
+        $chunk = $request->post('chunk', 0);
+        $chunks = $request->post('chunks', 0);
+
+        $originalName = $file->getClientOriginalName();
+        $ext = $file->getClientOriginalExtension();
+
+        $realPath = $file->getRealPath(); //临时目录
+        $saved_name = '';
+
+        if ($chunk == $chunks) {
+            $saved_name = 'saved_' . date('Ymd-His') . ".$ext";
+
+            $bool = Storage::disk('local')->put($saved_name, file_get_contents($realPath)); // 保存直接 app 目录下，分片的块在 temp 下
+
+            if ($bool !== true) {
+                return $this->response->withBadRequest('upload failed');
+            }
+            return $this->response->json([
+                'original_name' => $originalName,
+                'mime' => $file->getMimeType(),
+                'size' => human_filesize($file->getClientSize()),
+                'relative_url' => 'storage/' . $saved_name,
+                'url' => asset('storage/' . $saved_name),
+            ]);
+        }
+        else {
+            // 分片的临时文件
+            $filename = md5($originalName).'-'.($chunk+1).'.tmp';
+            // $path_name = storage_path('app/temp/') . $filename;
+
+            Storage::disk('temp')->put($filename, file_get_contents($realPath));
+
+            if (($chunk + 1) == $chunks) {
+                // 接收完所有分片，开始合成
+                $saved_name = 'saved_'. date('Ymd-His') . ".$ext";
+                $file_names = storage_path('app/') . $saved_name;// 保存直接 app 目录下，分片的块在 temp 下
+                $fp = fopen($file_names,'ab');
+
+                for($i=0; $i<$chunks; $i++){
+                    $tmp_files = storage_path('app/temp/') . md5($originalName).'-'.($i+1).'.tmp';
+                    $handle = fopen($tmp_files,'rb');
+                    fwrite($fp, fread($handle, filesize($tmp_files)));
+                    fclose($handle);
+                    unlink($tmp_files);
+                }
+                //关闭句柄
+                fclose($fp);
+            }
+
+            return $this->response->json([
+                'original_name' => $originalName,
+                'mime' => $file->getMimeType(),
+                'size' => human_filesize($file->getClientSize()),
+                'relative_url' => 'storage/' . $saved_name,
+                'url' => asset('storage/' . $saved_name),
+            ]);
+        }
     }
 
     /**
@@ -132,74 +202,5 @@ class FileController extends ApiController
         $result = $this->manager->store($file, $path, $fileName);
 
         return $this->response->json(['data'=>$result]);
-    }
-
-    public function chunkUpload(Request $request)
-    {
-        set_time_limit(0);
-        ini_set('memory_limit','256M');
-
-        $this->validate($request, [
-            'file' => 'required'
-        ]);
-
-        $file = $request->file('file');
-        $chunk = $request->post('chunk', 0);
-        $chunks = $request->post('chunks', 0);
-
-        $originalName = $file->getClientOriginalName();
-        $ext = $file->getClientOriginalExtension();
-
-        $realPath = $file->getRealPath(); //临时目录
-        $saved_name = '';
-
-        if ($chunk == $chunks) {
-            $saved_name = 'saved_' . date('Ymd-His') . ".$ext";
-
-            $bool = Storage::disk('local')->put($saved_name, file_get_contents($realPath)); // 保存直接 app 目录下，分片的块在 temp 下
-
-            if ($bool !== true) {
-                return $this->response->withBadRequest('upload failed');
-            }
-            return $this->response->json([
-                'original_name' => $originalName,
-                'mime' => $file->getMimeType(),
-                'size' => human_filesize($file->getClientSize()),
-                'relative_url' => 'storage/' . $saved_name,
-                'url' => asset('storage/' . $saved_name),
-            ]);
-        }
-        else {
-            // 分片的临时文件
-            $filename = md5($originalName).'-'.($chunk+1).'.tmp';
-            // $path_name = storage_path('app/temp/') . $filename;
-
-            Storage::disk('temp')->put($filename, file_get_contents($realPath));
-
-            if (($chunk + 1) == $chunks) {
-                // 接收完所有分片，开始合成
-                $saved_name = 'saved_'. date('Ymd-His') . ".$ext";
-                $file_names = storage_path('app/') . $saved_name;// 保存直接 app 目录下，分片的块在 temp 下
-                $fp = fopen($file_names,'ab');
-
-                for($i=0; $i<$chunks; $i++){
-                    $tmp_files = storage_path('app/temp/') . md5($originalName).'-'.($i+1).'.tmp';
-                    $handle = fopen($tmp_files,'rb');
-                    fwrite($fp, fread($handle, filesize($tmp_files)));
-                    fclose($handle);
-                    unlink($tmp_files);
-                }
-                //关闭句柄
-                fclose($fp);
-            }
-
-            return $this->response->json([
-                'original_name' => $originalName,
-//                'mime' => $file->getMimeType(),
-//                'size' => human_filesize($file->getClientSize()),
-                'relative_url' => 'storage/' . $saved_name,
-                'url' => asset('storage/' . $saved_name),
-            ]);
-        }
     }
 }

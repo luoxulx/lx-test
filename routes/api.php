@@ -31,39 +31,39 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
 
     Route::resource('user', 'UserController', ['names'=>[
         'index' => 'api.user.index',
-        'show' => 'api.user.show',
         'store' => 'api.user.store',
+        'show' => 'api.user.show',
         'update' => 'api.user.update',
         'destroy' => 'api.user.destroy',
     ], 'except'=>['create', 'edit']]);
 
     Route::resource('tag', 'TagController', ['names'=>[
         'index' => 'api.tag.index',
-        'show' => 'api.tag.show',
         'store' => 'api.tag.store',
+        'show' => 'api.tag.show',
         'update' => 'api.tag.update',
         'destroy' => 'api.tag.destroy',
     ], 'except'=>['create', 'edit']]);
 
     Route::resource('article', 'ArticleController', ['names'=>[
         'index' => 'api.article.index',
-        'show' => 'api.article.show',
         'store' => 'api.article.store',
+        'show' => 'api.article.show',
         'update' => 'api.article.update',
         'destroy' => 'api.article.destroy',
     ], 'except'=>['create', 'edit']]);
 
     Route::resource('category', 'CategoryController', ['names'=>[
         'index' => 'api.category.index',
-        'show' => 'api.category.show',
         'store' => 'api.category.store',
+        'show' => 'api.category.show',
         'update' => 'api.category.update',
         'destroy' => 'api.category.destroy',
     ], 'except'=>['create', 'edit']]);
     Route::resource('comment', 'CommentController', ['names'=>[
         'index' => 'api.comment.index',
-        'show' => 'api.comment.show',
         'store' => 'api.comment.store',
+        'show' => 'api.comment.show',
         'update' => 'api.comment.update',
         'destroy' => 'api.comment.destroy',
     ], 'except'=>['create', 'edit']]);
@@ -73,6 +73,7 @@ Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:ap
 
     // file -------------------- manage
     Route::post('/file/upload', 'FileController@fileUpload')->name('api.file.upload');
+    Route::post('/pic/upload', 'FileController@picUpload')->name('api.pic.upload');
     Route::post('/file/file_index', 'FileController@fileIndex')->name('api.file.file_index');
 
 });

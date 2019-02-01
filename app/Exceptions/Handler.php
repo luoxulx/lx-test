@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
         // 为了兼容 api 返回 json
         if($request->is('api/*')) {
             if ($exception instanceof ValidationException) {
-                return response()->json(['message' => array_values($exception->errors())[0][0]], 422);
+                return response()->json(['status'=>false, 'message' => array_values($exception->errors())[0][0]], 422);
             }
 
             // 针对异常，返回json格式 处理

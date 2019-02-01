@@ -249,7 +249,7 @@ class BaseFileManage
 
         $realPath = $this->disk->putFileAs($dir, $file, $hashName);
 
-        return [
+        $response = [
             'filename' => $hashName,
             'original_name' => $file->getClientOriginalName(),
             'mime' => $mime,
@@ -258,6 +258,10 @@ class BaseFileManage
             'relative_url' => 'storage/' . $realPath,
             'url' => asset('storage/' . $realPath),
         ];
+
+        $this->recordUpload($response);
+
+        return $response;
     }
 
     /**
@@ -304,5 +308,16 @@ class BaseFileManage
         $this->cleanFolder($path);
 
         return $this->disk->delete($path);
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function recordUpload($data)
+    {
+        $fileModel = new \App\Models\File;
+        $fileModel->fill($data);
+        return $fileModel->save();
     }
 }

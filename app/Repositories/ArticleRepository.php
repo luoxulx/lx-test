@@ -20,6 +20,17 @@ class ArticleRepository extends BaseRepository
         $this->model = $article;
     }
 
+    // 仅后台 api,含草稿
+    public function getById(int $id)
+    {
+        return $this->model->withoutGlobalScope(DraftScope::class)->findOrFail($id);
+    }
+
+    public function destroy(int $id)
+    {
+        return $this->getById($id)->delete();
+    }
+
     // 仅供 后台 api 使用，含草稿
     public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'])
     {

@@ -41,8 +41,8 @@ class Models extends Model
      * @param $value
      * @return string
      */
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans();
-    }
+//    public function getCreatedAtAttribute($value)
+//    {
+//        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans();
+//    }
 }
