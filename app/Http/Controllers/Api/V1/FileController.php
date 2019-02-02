@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\FileRepository;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,14 @@ class FileController extends ApiController
 {
 
     protected $manager;
+    protected $fileRepos;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->manager = app('file_manage');
+        $this->fileRepos = app(FileRepository::class);
     }
 
     public function fileIndex(Request $request)
@@ -39,7 +42,7 @@ class FileController extends ApiController
      */
     public function picUpload(Request $request)
     {
-        $strategy = $request->get('path', 'temp'); //不带 /
+        $strategy = $request->post('dir', 'temp'); //不带 /
 
         if (! $request->hasFile('file')) {
             return $this->response->withBadRequest('file not found');
@@ -49,6 +52,8 @@ class FileController extends ApiController
         $path = $strategy . '/' . date('Ymd');
 
         $result = $this->manager->store($request->file('file'), $path);
+
+        $this->fileRepos->recordUpload($result);
 
         return $this->response->json(['data'=>$result]);
     }
@@ -132,7 +137,7 @@ class FileController extends ApiController
      */
     public function deleteFile(Request $request)
     {
-        $path = $request->get('path');
+        $path = $request->post('dir');
 
         $data = $this->manager->deleteFile($path);
 
@@ -148,7 +153,7 @@ class FileController extends ApiController
      */
     public function createFolder(Request $request)
     {
-        $folder = $request->get('path');
+        $folder = $request->post('dir');
 
         $data = $this->manager->createFolder($folder);
 
@@ -164,9 +169,9 @@ class FileController extends ApiController
      */
     public function deleteFolder(Request $request)
     {
-        $del_folder = $request->get('del_folder');
+        $del_folder = $request->post('del_folder');
 
-        $folder = $request->get('path') . '/' . $del_folder;
+        $folder = $request->post('dir') . '/' . $del_folder;
 
         $data = $this->manager->deleteFolder($folder);
 
@@ -189,11 +194,11 @@ class FileController extends ApiController
     {
         $file = $request->file('file');
 
-        $fileName = $request->get('name')
-            ? $request->get('name').'.'.explode('/', $file->getClientMimeType())[1]
+        $fileName = $request->post('name')
+            ? $request->post('name').'.'.explode('/', $file->getClientMimeType())[1]
             : $file->getClientOriginalName();
 
-        $path = str_finish($request->get('path'), '/');
+        $path = str_finish($request->post('path'), '/');
 
         if ($this->manager->checkFile($path.$fileName)) {
             return $this->response->withBadRequest('This File exists.');

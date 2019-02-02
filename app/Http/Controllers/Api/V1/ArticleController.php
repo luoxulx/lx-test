@@ -31,8 +31,11 @@ class ArticleController extends ApiController
     public function index()
     {
         $per_page = intval(request()->get('per_page', 10));
+        $category_id = intval(request()->get('category_id'));
 
-        return $this->response->collection($this->article->paginate($per_page), new ArticleTransformer());
+        $condition = ['category_id'=>$category_id];
+
+        return $this->response->collection($this->article->paginate($per_page, ['created_at', 'desc'], $condition), new ArticleTransformer());
     }
 
     public function show($id)

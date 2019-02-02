@@ -16,4 +16,10 @@ class FileRepository extends BaseRepository
     {
         $this->model = $file;
     }
+
+    public function recordUpload($data)
+    {
+        $this->model->fill($data);
+        return $this->model->save();
+    }
 }

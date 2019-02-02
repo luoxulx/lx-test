@@ -22,7 +22,7 @@ Route::group(['middleware' => 'jwt.refresh'], function(){
 Route::get('/open/captcha', 'Api\\V1\\OpenController@captcha')->name('api.open.captcha');
 
 // 后台接口  会JWT鉴权
-Route::group(['namespace'=>'Api\\V1', ], function () { //'middleware'=>['auth:api', 'operation']
+Route::group(['namespace'=>'Api\\V1', 'middleware'=>['auth:api', 'operation']], function () { //'middleware'=>['auth:api', 'operation']
 
     Route::post('/auth/logout', 'AuthController@logout')->name('api.auth.logout');
 

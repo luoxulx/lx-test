@@ -259,8 +259,6 @@ class BaseFileManage
             'url' => asset('storage/' . $realPath),
         ];
 
-        $this->recordUpload($response);
-
         return $response;
     }
 
@@ -308,16 +306,5 @@ class BaseFileManage
         $this->cleanFolder($path);
 
         return $this->disk->delete($path);
-    }
-
-    /**
-     * @param $data
-     * @return bool
-     */
-    public function recordUpload($data)
-    {
-        $fileModel = new \App\Models\File;
-        $fileModel->fill($data);
-        return $fileModel->save();
     }
 }

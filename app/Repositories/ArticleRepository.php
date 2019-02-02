@@ -32,8 +32,11 @@ class ArticleRepository extends BaseRepository
     }
 
     // 仅供 后台 api 使用，含草稿
-    public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'])
+    public function paginate(int $per_page = 10, array $sort = ['created_at', 'desc'], $condition = [])
     {
+        if (current($condition)) {
+            return $this->model->withoutGlobalScope(DraftScope::class)->where($condition)->orderBy($sort[0], $sort[1])->paginate($per_page);
+        }
         return $this->model->withoutGlobalScope(DraftScope::class)->orderBy($sort[0], $sort[1])->paginate($per_page);
     }
 
