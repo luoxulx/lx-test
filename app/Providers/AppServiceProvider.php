@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if ($this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
         $this->app->singleton('file_manage', function ($app) {
             $disk_config = config('filesystems.default', 'public');
             # TODO 第三方存储  默认 public=>local
