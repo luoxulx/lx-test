@@ -1,1 +1,1 @@
-{{ str_replace('_', '-', app()->getLocale()) }}
+1

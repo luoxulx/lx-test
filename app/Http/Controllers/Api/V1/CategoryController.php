@@ -36,7 +36,7 @@ class CategoryController extends ApiController
     public function index(Request $request)
     {
         $name = $request->get('name');
-        return $this->response->collection($this->category->all(['id','parent_id','name','description','thumbnail']), new CategoryTransformer());
+        return $this->response->collection($this->category->all(['id','parent_id','name','description','thumbnail', 'created_at']), new CategoryTransformer());
     }
 
     public function store(Request $request)

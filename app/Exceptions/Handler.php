@@ -55,11 +55,12 @@ class Handler extends ExceptionHandler
 
             // 针对异常，返回json格式 处理
             $response = [];
+            $response['status'] = false;
             $http_code = $this->convertExceptionToResponse($exception)->getStatusCode();
-            if ($http_code < 100 || $http_code >= 600) {
-                return response()->json(['message' => 'HTTP ERROR'], $http_code);
-            }
 
+            if ($http_code < 100 || $http_code >= 600) {
+                return response()->json(['message' => 'HTTP ERROR', 'status'=>false], $http_code);
+            }
             $response['message'] = (!$exception->getMessage()) ? 'SOME ERRORS OCCURRED.' : $exception->getMessage();
 
             if (config('app.debug') === true) {
