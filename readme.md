@@ -1,8 +1,4 @@
-<p align="center">
-	api-test
-
-	步骤：
-</p>
+测试
 
 <p>php composer.phar install -vvv</p>
 <p>php artisan storage:link</p>
