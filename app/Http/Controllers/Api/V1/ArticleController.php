@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by PhpStorm.已弃用
  * User: luoxulxT
  * Date: 2018/10/17
  * Time: 23:31
